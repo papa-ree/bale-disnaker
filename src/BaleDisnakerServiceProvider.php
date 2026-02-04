@@ -45,11 +45,14 @@ class BaleDisnakerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Only load routes if this landing page is active
+        // Only load resources if this landing page is active
         if ($this->isActiveLandingPage()) {
             $this->app->booted(function () {
                 $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
             });
+
+            // Prepend package view directory to prioritize its views (including errors)
+            $this->app['view']->prependLocation(__DIR__ . '/../resources/views');
         }
 
         $this->offerPublishing();
