@@ -18,7 +18,7 @@
                         <div class="lg:col-span-5">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search News</label>
                             <div class="relative">
-                                <input type="text" wire:model.live.debounce.300ms="search"
+                                <input type="text" wire:model="search"
                                     placeholder="Search news by title or content..."
                                     class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none transition-all dark:text-white">
                                 <svg class="w-5 h-5 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,20 +36,24 @@
                                     dateFormat: 'Y-m-d',
                                     defaultDate: @js($date),
                                     onChange: (selectedDates, dateStr) => {
-                                        @this.set('date', dateStr);
+                                        // Update the hidden input which is wire:modeled
+                                        $refs.dateInput.value = dateStr;
+                                        $refs.dateInput.dispatchEvent(new Event('input'));
                                     }
                                 });
                             }
                         }">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Date</label>
                             <div class="relative">
-                                <input x-ref="picker" type="text" placeholder="Date range..."
+                                <input type="hidden" x-ref="dateInput" wire:model="date">
+                                <input x-ref="picker" type="text" placeholder="Date range..." readonly
                                     class="w-full pl-10 pr-10 py-2.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none transition-all dark:text-white cursor-pointer">
                                 <svg class="w-5 h-5 text-gray-400 absolute left-3 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-                                <button type="button" @click="@this.set('date', ''); picker.clear()" x-show="$wire.date"
-                                    class="absolute right-3 top-3 cursor-pointer text-gray-400 hover:text-red-500 transition-colors">
+                                <button type="button" @click="$wire.set('date', ''); picker.clear(); $wire.$refresh()" x-show="$wire.date"
+                                    class="absolute right-3 top-3 cursor-pointer text-gray-400 hover:text-red-500 transition-colors"
+                                    title="Clear date">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                     </svg>
@@ -80,7 +84,30 @@
     {{-- Posts Grid --}}
     <section class="py-12">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
+            {{-- Skeleton Loaders --}}
+            <div wire:loading.grid wire:target="search, date, $refresh, clearSearch" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
+                @for ($i = 0; $i < 6; $i++)
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-slate-700 animate-pulse">
+                        <div class="h-56 bg-gray-200 dark:bg-slate-700"></div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="w-4 h-4 bg-gray-200 dark:bg-slate-700 rounded"></div>
+                                <div class="w-24 h-4 bg-gray-200 dark:bg-slate-700 rounded"></div>
+                            </div>
+                            <div class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-3/4 mb-3"></div>
+                            <div class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-1/2 mb-4"></div>
+                            <div class="space-y-2 mb-4">
+                                <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded"></div>
+                                <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded"></div>
+                                <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-2/3"></div>
+                            </div>
+                            <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-32"></div>
+                        </div>
+                    </div>
+                @endfor
+            </div>
+
+            <div wire:loading.remove wire:target="search, date, $refresh, clearSearch" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
                 @forelse ($this->posts as $post)
                     <article wire:key='{{ $post->id }}'
                         class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-slate-700">

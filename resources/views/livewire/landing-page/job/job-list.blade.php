@@ -46,11 +46,21 @@
                         </select>
                     </div>
 
-                    {{-- Search Button (Not strictly needed with updates but good for UX) --}}
+                    {{-- Search Button --}}
                     <div class="md:col-span-1">
-                        <button type="submit"
-                            class="w-full h-12 bg-teal-600 hover:bg-teal-700 text-white rounded-md transition-colors">
-                            <x-lucide-search class="w-5 h-5 mx-auto" />
+                        <button type="submit" wire:loading.attr="disabled"
+                            class="w-full h-14 bg-teal-600 hover:bg-teal-700 text-white rounded-xl transition-all shadow-lg shadow-teal-600/20 flex items-center justify-center group">
+                            <x-lucide-search wire:loading.remove
+                                wire:target="searchQuery, selectedType, selectedCategory, $refresh" class="w-5 h-5" />
+                            <svg wire:loading wire:target="searchQuery, selectedType, selectedCategory, $refresh"
+                                class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -95,84 +105,126 @@
             </p>
         </div>
 
-        {{-- Jobs List --}}
-        @if (count($jobs) > 0)
-            <div class="max-w-5xl mx-auto space-y-6">
-                @foreach ($jobs as $job)
-                    <article
-                        class="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700">
-                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                            <div class="flex-1">
-                                {{-- Job Header --}}
-                                <div class="mb-4">
-                                    <h3
-                                        class="text-2xl font-bold text-gray-900 dark:text-white mb-2 hover:text-teal-700 dark:hover:text-teal-400 transition-colors">
-                                        {{ $job['title'] }}
-                                    </h3>
-                                    <p class="text-lg text-gray-700 dark:text-gray-300 font-medium">{{ $job['company'] }}</p>
-                                </div>
-
-                                {{-- Job Details --}}
-                                <div class="flex flex-wrap gap-4 mb-4 text-gray-600 dark:text-gray-400">
-                                    <div class="flex items-center gap-2">
-                                        <x-lucide-map-pin class="w-[18px] h-[18px] text-teal-600 dark:text-teal-400" />
-                                        <span>{{ $job['location'] }}</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <x-lucide-briefcase class="w-[18px] h-[18px] text-blue-600 dark:text-blue-400" />
-                                        <span>{{ $job['type'] }}</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <x-lucide-dollar-sign class="w-[18px] h-[18px] text-green-600 dark:text-green-400" />
-                                        <span>{{ $job['salary'] }}</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <x-lucide-clock class="w-[18px] h-[18px] text-purple-600 dark:text-purple-400" />
-                                        <span>{{ \Carbon\Carbon::parse($job['postedDate'])->diffForHumans() }}</span>
-                                    </div>
-                                </div>
-
-                                {{-- Job Description --}}
-                                <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
-                                    {{ $job['description'] }}
-                                </p>
-
-                                {{-- Category Badge --}}
-                                <div class="flex gap-2">
-                                    <span
-                                        class="px-3 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 rounded-full text-sm font-medium">
-                                        {{ $job['category'] }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            {{-- Apply Button --}}
-                            <div class="md:ml-6">
-                                <a href="{{ route('bale.view-job', $job['id']) }}"
-                                    class="w-full md:w-auto px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-colors inline-block text-center"
-                                    wire:navigate>
-                                    View Details
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-                @endforeach
-            </div>
-        @else
-            <div class="max-w-5xl mx-auto text-center py-16">
+        {{-- Skeleton Loaders --}}
+        <div wire:loading.block wire:target="searchQuery, selectedType, selectedCategory, $refresh, clearFilters"
+            class="max-w-5xl mx-auto space-y-6 mb-8">
+            @for ($i = 0; $i < 3; $i++)
                 <div
-                    class="w-24 h-24 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-100 dark:border-slate-700">
-                    <x-lucide-search class="text-gray-400 w-10 h-10" />
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 shadow-md border border-gray-100 dark:border-slate-700 animate-pulse">
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="h-8 bg-gray-200 dark:bg-slate-700 rounded w-1/3 mb-4"></div>
+                            <div class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-1/4 mb-6"></div>
+                            <div class="flex flex-wrap gap-4 mb-6 text-gray-600 dark:text-gray-400">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-[18px] h-[18px] bg-gray-200 dark:bg-slate-700 rounded-full"></div>
+                                    <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-20"></div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-[18px] h-[18px] bg-gray-200 dark:bg-slate-700 rounded-full"></div>
+                                    <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-20"></div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-[18px] h-[18px] bg-gray-200 dark:bg-slate-700 rounded-full"></div>
+                                    <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-20"></div>
+                                </div>
+                            </div>
+                            <div class="space-y-3 mb-6">
+                                <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-full"></div>
+                                <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-full"></div>
+                                <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-2/3"></div>
+                            </div>
+                            <div class="h-6 bg-gray-200 dark:bg-slate-700 rounded-full w-24"></div>
+                        </div>
+                        <div class="w-full md:w-32 h-12 bg-gray-200 dark:bg-slate-700 rounded-xl"></div>
+                    </div>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">No jobs found</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-6">
-                    Try adjusting your search or filters to find what you're looking for.
-                </p>
-                <button wire:click="clearFilters"
-                    class="inline-flex px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-semibold transition-colors">
-                    Clear Filters
-                </button>
-            </div>
-        @endif
+            @endfor
+        </div>
+
+        {{-- Jobs List --}}
+        <div wire:loading.remove wire:target="searchQuery, selectedType, selectedCategory, $refresh, clearFilters">
+            @if (count($jobs) > 0)
+                <div class="max-w-5xl mx-auto space-y-6">
+                    @foreach ($jobs as $job)
+                        <article
+                            class="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700">
+                            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                                <div class="flex-1">
+                                    {{-- Job Header --}}
+                                    <div class="mb-4">
+                                        <h3
+                                            class="text-2xl font-bold text-gray-900 dark:text-white mb-2 hover:text-teal-700 dark:hover:text-teal-400 transition-colors">
+                                            {{ $job['title'] }}
+                                        </h3>
+                                        <p class="text-lg text-gray-700 dark:text-gray-300 font-medium">{{ $job['company'] }}
+                                        </p>
+                                    </div>
+
+                                    {{-- Job Details --}}
+                                    <div class="flex flex-wrap gap-4 mb-4 text-gray-600 dark:text-gray-400">
+                                        <div class="flex items-center gap-2">
+                                            <x-lucide-map-pin class="w-[18px] h-[18px] text-teal-600 dark:text-teal-400" />
+                                            <span>{{ $job['location'] }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <x-lucide-briefcase class="w-[18px] h-[18px] text-blue-600 dark:text-blue-400" />
+                                            <span>{{ $job['type'] }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <x-lucide-dollar-sign
+                                                class="w-[18px] h-[18px] text-green-600 dark:text-green-400" />
+                                            <span>{{ $job['salary'] }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <x-lucide-clock class="w-[18px] h-[18px] text-purple-600 dark:text-purple-400" />
+                                            <span>{{ \Carbon\Carbon::parse($job['postedDate'])->diffForHumans() }}</span>
+                                        </div>
+                                    </div>
+
+                                    {{-- Job Description --}}
+                                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                                        {{ $job['description'] }}
+                                    </p>
+
+                                    {{-- Category Badge --}}
+                                    <div class="flex gap-2">
+                                        <span
+                                            class="px-3 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 rounded-full text-sm font-medium">
+                                            {{ $job['category'] }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {{-- Apply Button --}}
+                                <div class="md:ml-6">
+                                    <a href="{{ route('bale.view-job', $job['id']) }}"
+                                        class="w-full md:w-auto px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-colors inline-block text-center"
+                                        wire:navigate>
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            @else
+                <div class="max-w-5xl mx-auto text-center py-16">
+                    <div
+                        class="w-24 h-24 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-100 dark:border-slate-700">
+                        <x-lucide-search class="text-gray-400 w-10 h-10" />
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">No jobs found</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        Try adjusting your search or filters to find what you're looking for.
+                    </p>
+                    <button wire:click="clearFilters"
+                        class="inline-flex px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-semibold transition-colors">
+                        Clear Filters
+                    </button>
+                </div>
+            @endif
+        </div>
     </div>
+</div>
 </div>
