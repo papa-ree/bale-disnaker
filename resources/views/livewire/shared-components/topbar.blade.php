@@ -1,15 +1,15 @@
-<header x-data="{ mobileMenuOpen: false }"
+<header x-data="{ mobileMenuOpen: false }" wire:cloak @click.outside="mobileMenuOpen = false"
     class="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm border-b border-gray-100 dark:border-slate-800">
     <nav class="container mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
             {{-- Logo and Brand --}}
             <a href="{{ route('index') }}" class="flex items-center gap-3">
-                <img src="{{ cdn_asset('shared/logo-png.png') }}" class="h-12 w-12 object-contain" loading="lazy"
-                    alt="logo ponorogo"
+                <img src="{{ cdn_asset('shared/logo-png.png') }}" class="md:h-12 md:w-12 h-8 w-8 object-contain"
+                    loading="lazy" alt="logo ponorogo"
                     referrerpolicy="{{ app()->isLocal() ? 'no-referrer' : 'strict-origin-when-cross-origin' }}">
                 <div class="flex flex-col">
-                    <span class="text-lg font-bold text-gray-900 dark:text-white">Disnaker Ponorogo</span>
-                    <span class="text-xs text-gray-600 dark:text-gray-400">Dinas Tenaga Kerja</span>
+                    <span class="text-base md:text-lg font-bold text-gray-900 dark:text-white">Dinas Tenaga Kerja</span>
+                    <span class="text-xs text-gray-600 dark:text-gray-400">Kabupaten Ponorogo</span>
                 </div>
             </a>
 

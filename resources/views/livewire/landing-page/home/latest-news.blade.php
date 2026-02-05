@@ -80,8 +80,7 @@
                 if ($buttonUrl === '#')
                     $buttonUrl = route('bale.post-list');
             @endphp
-            <div class="text-center" data-aos="fade-up" data-aos-offset="200" data-aos-delay="400"
-                data-aos-duration="1000" data-aos-once="true">
+            <div class="text-center" data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
                 <a href="{{ $buttonUrl }}" wire:navigate.hover
                     class="inline-block px-8 py-4 bg-teal-600 text-white rounded-xl font-semibold text-lg hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl">
                     {{ $buttonLabel }}

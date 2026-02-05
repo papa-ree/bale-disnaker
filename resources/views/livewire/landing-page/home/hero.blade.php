@@ -27,7 +27,7 @@
             @endif
 
             @if(!empty($section['content']['meta']['title'] ?? null))
-                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
                     {!! nl2br(e($section['content']['meta']['title'])) !!}
                 </h1>
             @endif

@@ -36,11 +36,25 @@
 
     <livewire:bale-disnaker.shared-components.topbar />
 
-    <main class="pt-20"> {{-- Added padding-top to account for fixed header --}}
+    <main class="pt-16 md:pt-20"> {{-- Added padding-top to account for fixed header --}}
         {{ $slot }}
     </main>
 
     <livewire:bale-disnaker.landing-page.footer.index />
+
+    {{-- Back to Top Button --}}
+    <div x-data="{ show: false }" x-init="window.addEventListener('scroll', () => { show = window.scrollY > 400 })"
+        x-show="show" x-cloak x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-90 translate-y-10"
+        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+        x-transition:leave-end="opacity-0 scale-90 translate-y-10"
+        @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+        class="fixed bottom-6 right-6 z-50 p-3 bg-teal-600 text-white rounded-xl shadow-xl hover:bg-teal-700 hover:shadow-2xl transition-all duration-300 cursor-pointer group focus:outline-none focus:ring-4 focus:ring-teal-500/20"
+        aria-label="Back to Top" style="display: none;">
+        <x-lucide-chevron-up class="w-6 h-6 group-hover:-translate-y-1 transition-transform duration-300" />
+    </div>
 
     @livewireScripts
 

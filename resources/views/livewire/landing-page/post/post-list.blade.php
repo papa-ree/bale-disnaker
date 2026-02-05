@@ -9,7 +9,7 @@
     />
 
     {{-- Search Form Sticky --}}
-    <section class="sticky top-16 z-20 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-slate-800 py-6">
+    <section class="top-14 z-20 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-slate-800 py-6">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto">
                 <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
@@ -85,35 +85,35 @@
     <section class="py-12">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Skeleton Loaders --}}
-            <div wire:loading.grid wire:target="search, date, $refresh, clearSearch" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
+            <div wire:loading.grid wire:target="search, date, $refresh, clearSearch" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto mb-16">
                 @for ($i = 0; $i < 6; $i++)
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-slate-700 animate-pulse">
-                        <div class="h-56 bg-gray-200 dark:bg-slate-700"></div>
-                        <div class="p-6">
-                            <div class="flex items-center gap-2 mb-3">
-                                <div class="w-4 h-4 bg-gray-200 dark:bg-slate-700 rounded"></div>
-                                <div class="w-24 h-4 bg-gray-200 dark:bg-slate-700 rounded"></div>
+                    <div class="bg-white dark:bg-slate-800 rounded-xl md:rounded-2xl overflow-hidden shadow-sm md:shadow-md border border-gray-100 dark:border-slate-700 animate-pulse flex md:block gap-4 p-3 md:p-0">
+                        <div class="h-24 w-24 md:h-56 md:w-full bg-gray-200 dark:bg-slate-700 shrink-0 rounded-lg md:rounded-none"></div>
+                        <div class="p-0 md:p-6 flex-1 flex flex-col justify-center">
+                            <div class="flex items-center gap-2 mb-2 md:mb-3">
+                                <div class="w-4 h-4 bg-gray-200 dark:bg-slate-700 rounded hidden md:block"></div>
+                                <div class="w-20 md:w-24 h-3 md:h-4 bg-gray-200 dark:bg-slate-700 rounded"></div>
                             </div>
-                            <div class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-3/4 mb-3"></div>
-                            <div class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-1/2 mb-4"></div>
-                            <div class="space-y-2 mb-4">
+                            <div class="h-4 md:h-6 bg-gray-200 dark:bg-slate-700 rounded w-full md:w-3/4 mb-2 md:mb-3"></div>
+                            <div class="h-4 md:h-6 bg-gray-200 dark:bg-slate-700 rounded w-2/3 md:w-1/2 mb-4"></div>
+                            <div class="space-y-2 mb-4 hidden md:block">
                                 <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded"></div>
                                 <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded"></div>
                                 <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-2/3"></div>
                             </div>
-                            <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-32"></div>
+                            <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-32 hidden md:block"></div>
                         </div>
                     </div>
                 @endfor
             </div>
 
-            <div wire:loading.remove wire:target="search, date, $refresh, clearSearch" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
+            <div wire:loading.remove wire:target="search, date, $refresh, clearSearch" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto mb-16">
                 @forelse ($this->posts as $post)
                     <article wire:key='{{ $post->id }}'
-                        class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-slate-700">
-                        <a href="{{ route('bale.view-post', $post->slug) }}" class="block">
+                        class="group bg-white dark:bg-slate-800 rounded-xl md:rounded-2xl overflow-hidden shadow-sm md:shadow-md hover:shadow-md md:hover:shadow-2xl hover:border-teal-600 transition-all duration-300 border border-gray-100 dark:border-slate-700">
+                        <a href="{{ route('bale.view-post', $post->slug) }}" wire:navigate.hover class="flex md:block gap-4 p-3 md:p-0">
                             {{-- Image --}}
-                            <div class="relative h-56 overflow-hidden">
+                            <div class="relative h-24 w-24 md:h-56 md:w-full shrink-0 rounded-lg md:rounded-none overflow-hidden">
                                 @if ($post->thumbnail)
                                     <img src="{{ cdn_asset('thumbnails/' . $post->thumbnail) }}" alt="{{ $post->title }}"
                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
@@ -126,7 +126,7 @@
                                 @endif
                                 
                                 @if($post?->category?->name)
-                                    <div class="absolute top-4 left-4">
+                                    <div class="absolute top-4 left-4 hidden md:block">
                                         <span class="px-3 py-1 bg-teal-600 text-white text-xs font-semibold rounded-full">
                                             {{ $post->category->name }}
                                         </span>
@@ -135,21 +135,21 @@
                             </div>
 
                             {{-- Content --}}
-                            <div class="p-6">
-                                <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
-                                    <x-lucide-calendar class="w-4 h-4" />
+                            <div class="p-0 md:p-6 flex-1 flex flex-col justify-center">
+                                <div class="flex items-center gap-2 text-[10px] md:text-sm font-bold md:font-normal text-teal-600/60 md:text-gray-500 dark:text-teal-400 md:dark:text-gray-400 mb-1 md:mb-3 uppercase tracking-wider md:normal-case md:tracking-normal">
+                                    <x-lucide-calendar class="w-4 h-4 hidden md:block" />
                                     <span>{{ $post->created_at }}</span>
                                 </div>
 
-                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-teal-600 transition-colors leading-snug line-clamp-2">
+                                <h3 class="text-sm md:text-xl font-bold text-gray-900 dark:text-white mb-1 md:mb-3 group-hover:text-teal-600 transition-colors leading-tight md:leading-snug line-clamp-2">
                                     {{ $post->title }}
                                 </h3>
 
-                                <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+                                <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 hidden md:block">
                                     {{ $post->excerpt(120) }}
                                 </p>
 
-                                <span class="inline-flex items-center gap-2 text-teal-600 font-semibold hover:text-teal-700 transition-colors group/link">
+                                <span class="hidden md:inline-flex items-center gap-2 text-teal-600 font-semibold hover:text-teal-700 transition-colors group/link">
                                     Read Full Article
                                     <x-lucide-arrow-right class="w-[18px] h-[18px] group-hover/link:translate-x-1 transition-transform" />
                                 </span>
