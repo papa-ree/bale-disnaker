@@ -8,7 +8,7 @@
         :breadcrumbs="[['label' => $section['content']['meta']['title'] ?? 'News & Announcements']]"
     />
 
-    {{-- Search Form Sticky --}}
+    {{-- Search Form --}}
     <section class="top-14 z-20 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-slate-800 py-6">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto">
@@ -28,7 +28,7 @@
                         </div>
 
                         {{-- Date Picker --}}
-                        <div class="lg:col-span-5" x-data="{
+                        <div class="lg:col-span-5" wire:ignore x-data="{
                             picker: null,
                             init() {
                                 this.picker = flatpickr(this.$refs.picker, {
@@ -37,8 +37,14 @@
                                     defaultDate: @js($date),
                                     onChange: (selectedDates, dateStr) => {
                                         // Update the hidden input which is wire:modeled
-                                        $refs.dateInput.value = dateStr;
-                                        $refs.dateInput.dispatchEvent(new Event('input'));
+                                        this.$refs.dateInput.value = dateStr;
+                                        this.$refs.dateInput.dispatchEvent(new Event('input'));
+                                    }
+                                });
+
+                                this.$watch('$wire.date', (value) => {
+                                    if (!value && this.picker) {
+                                        this.picker.clear(false);
                                     }
                                 });
                             }
@@ -51,7 +57,7 @@
                                 <svg class="w-5 h-5 text-gray-400 absolute left-3 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-                                <button type="button" @click="$wire.set('date', ''); picker.clear(); $wire.$refresh()" x-show="$wire.date"
+                                <button type="button" @click="if(picker) { picker.clear(); } $wire.set('date', '');" x-show="$wire.date"
                                     class="absolute right-3 top-3 cursor-pointer text-gray-400 hover:text-red-500 transition-colors"
                                     title="Clear date">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
