@@ -3,41 +3,93 @@
 namespace Paparee\BaleDisnaker\Livewire\LandingPage\Home;
 
 use Livewire\Component;
+use Livewire\Attributes\Computed;
 use Bale\Emperan\Models\Section;
 
 class JobSearchWidget extends Component
 {
+    public string $slug = 'job-widget-section';
     public $keyword = '';
     public array $section = [];
+    public $actived;
 
-    public function mount()
+    public function mount(?string $slug = null)
     {
-        $data = Section::whereSlug('job-vacancies-section')->first();
+        if ($slug) {
+            $this->slug = $slug;
+        }
+
+        $data = Section::whereSlug($this->slug)->first();
 
         $this->section = $data ? $data->content : [];
+        $this->actived = $data ? $data->actived : false;
+    }
 
-        // If 'kategori' doesn't exist in items, try to extract from jobs list
-        if (!isset($this->section['items']['kategori']) && !empty($this->section['items'])) {
-            $jobs = $this->section['items'];
-            // Normalize jobs list
-            if (isset($jobs['jobs']))
-                $jobs = $jobs['jobs'];
-            elseif (isset($jobs['data']))
-                $jobs = $jobs['data'];
+    #[Computed]
+    public function meta()
+    {
+        return $this->section['meta'] ?? [];
+    }
 
-            if (is_array($jobs)) {
-                $categories = collect($jobs)
-                    ->pluck('kategori')
-                    ->flatten()
-                    ->unique()
-                    ->values()
-                    ->toArray();
+    /**
+     * Parse items (array-wrapped values) into stats.
+     * Uses keys 'nilai' and 'nama stat' as seen in the database output.
+     */
+    #[Computed]
+    public function stats()
+    {
+        $items = $this->section['items'] ?? [];
+        $stats = [];
 
-                if (!empty($categories)) {
-                    $this->section['items']['kategori'] = $categories;
-                }
+        foreach ($items as $item) {
+            $label = is_array($item['nama stat'] ?? null)
+                ? ($item['nama stat'][0] ?? null)
+                : ($item['nama stat'] ?? null);
+
+            $value = is_array($item['nilai'] ?? null)
+                ? ($item['nilai'][0] ?? null)
+                : ($item['nilai'] ?? null);
+
+            if ($label !== null && $value !== null) {
+                $stats[] = [
+                    'label' => $label,
+                    'value' => $value
+                ];
             }
         }
+
+        return $stats;
+    }
+
+    /**
+     * Fetch categories for popular searches. 
+     * Usually extracted from job-vacancies-section or similar.
+     */
+    #[Computed]
+    public function categories()
+    {
+        // Try to fetch from job-vacancies-section as categories usually live there
+        $vacancies = Section::whereSlug('job-vacancies-section')->first();
+
+        if ($vacancies && isset($vacancies->content['items'])) {
+            $items = $vacancies->content['items'];
+
+            // Handle if items is nested
+            $jobs = $items['jobs'] ?? ($items['data'] ?? $items);
+
+            if (is_array($jobs)) {
+                return collect($jobs)
+                    ->pluck('kategori') // or 'category' if mapped differently
+                    ->flatten()
+                    ->filter()
+                    ->unique()
+                    ->values()
+                    ->take(5)
+                    ->toArray();
+            }
+        }
+
+        return [];
     }
 
     public function search()

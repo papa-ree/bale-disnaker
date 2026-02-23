@@ -3,27 +3,38 @@
 namespace Paparee\BaleDisnaker\Livewire\LandingPage\Home;
 
 use Livewire\Component;
-use Carbon\Carbon;
-
+use Livewire\Attributes\Computed;
 use Bale\Emperan\Models\Section;
 use Bale\Emperan\Models\Post;
-use Livewire\Attributes\Computed;
 
 class LatestNews extends Component
 {
+    public string $slug = 'post-section';
     public array $section = [];
+    public $actived;
 
-    public function mount()
+    public function mount(?string $slug = null)
     {
-        $data = Section::whereSlug('post-disnaker-section')->first();
+        if ($slug) {
+            $this->slug = $slug;
+        }
 
-        $this->section = $data ? $data->toArray() : [];
+        $sectionModel = Section::whereSlug($this->slug)->first();
+
+        $this->section = $sectionModel?->content ?? [];
+        $this->actived = $sectionModel?->actived ?? false;
+    }
+
+    #[Computed]
+    public function meta()
+    {
+        return $this->section['meta'] ?? [];
     }
 
     #[Computed]
     public function availablePosts()
     {
-        $limit = $this->section['content']['meta']['grid'] ?? 3;
+        $limit = $this->meta['grid'] ?? 3;
 
         // Ensure limit is numeric and > 0
         $limit = is_numeric($limit) && $limit > 0 ? (int) $limit : 3;

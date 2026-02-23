@@ -20,7 +20,7 @@ class JobList extends Component
 
     public function getSectionProperty()
     {
-        return Section::whereSlug('job-vacancies-section')->first();
+        return Section::whereSlug('job-vacancies-page')->first();
     }
 
     public function getJobsDataProperty()

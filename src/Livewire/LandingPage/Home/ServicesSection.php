@@ -2,18 +2,32 @@
 
 namespace Paparee\BaleDisnaker\Livewire\LandingPage\Home;
 
-use Bale\Emperan\Models\Section;
 use Livewire\Component;
+use Livewire\Attributes\Computed;
+use Bale\Emperan\Models\Section;
 
 class ServicesSection extends Component
 {
-    public function render()
-    {
-        $section = Section::where('slug', 'service-section')->first();
-        $colors = ["#008080", "#20B2AA", "#4169E1", "#3CB371", "#2E8B57", "#5F9EA0"];
+    public string $slug = 'service-section';
+    public array $section = [];
+    public $actived;
 
-        $services = [];
-        $meta = [
+    public function mount(?string $slug = null)
+    {
+        if ($slug) {
+            $this->slug = $slug;
+        }
+
+        $sectionModel = Section::whereSlug($this->slug)->first();
+
+        $this->section = $sectionModel?->content ?? [];
+        $this->actived = $sectionModel?->actived ?? false;
+    }
+
+    #[Computed]
+    public function meta()
+    {
+        $defaultMeta = [
             'title' => 'Our Services',
             'subtitle' => 'Comprehensive workforce solutions designed to empower both job seekers and employers',
             'bantuan' => [
@@ -26,40 +40,54 @@ class ServicesSection extends Component
             ]
         ];
 
-        if ($section && isset($section->content)) {
-            $content = $section->content;
+        $contentMeta = $this->section['meta'] ?? [];
 
-            if (isset($content['meta'])) {
-                $meta['title'] = $content['meta']['title'] ?? $meta['title'];
-                $meta['subtitle'] = $content['meta']['subtitle'] ?? $meta['subtitle'];
-                if (isset($content['meta']['bantuan'])) {
-                    $meta['bantuan'] = array_merge($meta['bantuan'], $content['meta']['bantuan']);
-                }
-            }
+        $meta = array_merge($defaultMeta, array_intersect_key($contentMeta, $defaultMeta));
 
-            if (isset($content['items']) && is_array($content['items'])) {
-                $rawItems = collect($content['items']);
-
-                $services = $rawItems->map(function ($item, $index) use ($colors) {
-                    return [
-                        'title' => $item['judul'][0] ?? '',
-                        'description' => $item['deskripsi'][0] ?? '',
-                        'icon' => $item['icon'][0] ?? 'circle',
-                        'url' => $item['url'][0] ?? '#',
-                        'color' => $colors[$index % count($colors)]
-                    ];
-                });
-
-                $others = $services->filter(fn($item) => strtolower($item['title']) === 'lainnya');
-                $mainServices = $services->reject(fn($item) => strtolower($item['title']) === 'lainnya'); // Fixed: reject items where title IS 'lainnya'
-
-                $services = $mainServices->concat($others);
-            }
+        if (isset($contentMeta['bantuan'])) {
+            $meta['bantuan'] = array_merge($defaultMeta['bantuan'], $contentMeta['bantuan']);
         }
 
-        return view('bale-disnaker::livewire.landing-page.home.services-section', [
-            'services' => $services,
-            'meta' => $meta
-        ]);
+        return $meta;
+    }
+
+    #[Computed]
+    public function services()
+    {
+        $items = $this->section['items'] ?? [];
+        $order = $this->section['meta']['order'] ?? ['url', 'icon', 'judul', 'deskripsi'];
+
+        $urlKey = $order[0] ?? 'url';
+        $iconKey = $order[1] ?? 'icon';
+        $titleKey = $order[2] ?? 'judul';
+        $descKey = $order[3] ?? 'deskripsi';
+
+        $colors = ["#008080", "#20B2AA", "#4169E1", "#3CB371", "#2E8B57", "#5F9EA0"];
+
+        $services = collect($items)->map(function ($item, $index) use ($colors, $urlKey, $iconKey, $titleKey, $descKey) {
+            $title = is_array($item[$titleKey] ?? null) ? ($item[$titleKey][0] ?? '') : ($item[$titleKey] ?? '');
+            $description = is_array($item[$descKey] ?? null) ? ($item[$descKey][0] ?? '') : ($item[$descKey] ?? '');
+            $icon = is_array($item[$iconKey] ?? null) ? ($item[$iconKey][0] ?? 'circle') : ($item[$iconKey] ?? 'circle');
+            $url = is_array($item[$urlKey] ?? null) ? ($item[$urlKey][0] ?? '#') : ($item[$urlKey] ?? '#');
+
+            return [
+                'title' => $title,
+                'description' => $description,
+                'icon' => $icon,
+                'url' => $url,
+                'color' => $colors[$index % count($colors)]
+            ];
+        });
+
+        // Ensure "Lainnya" is at the end if it exists
+        $others = $services->filter(fn($item) => strtolower($item['title']) === 'lainnya');
+        $mainServices = $services->reject(fn($item) => strtolower($item['title']) === 'lainnya');
+
+        return $mainServices->concat($others);
+    }
+
+    public function render()
+    {
+        return view('bale-disnaker::livewire.landing-page.home.services-section');
     }
 }

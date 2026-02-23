@@ -40,7 +40,7 @@
         {{ $slot }}
     </main>
 
-    <livewire:bale-disnaker.landing-page.footer.index />
+    <livewire:bale-disnaker.landing-page.footer.index slug="footer-section" />
 
     {{-- Back to Top Button --}}
     <div x-data="{ show: false }" x-init="window.addEventListener('scroll', () => { show = window.scrollY > 400 })"
