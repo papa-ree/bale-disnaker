@@ -2,10 +2,10 @@
 
     {{-- header --}}
     <x-bale-disnaker::header-page 
-        :title="$section['content']['meta']['title'] ?? 'News & Announcements'"
-        :subtitle="$section['content']['meta']['subtitle'] ?? 'Stay informed with the latest updates from Disnaker Ponorogo'"
+        :title="$section['content']['meta']['title'] ?? 'Berita & Pengumuman'"
+        :subtitle="$section['content']['meta']['subtitle'] ?? 'Tetap terinformasi dengan pembaruan terbaru dari Disnaker Ponorogo'"
         :background="$section['content']['meta']['background'] ?? null"
-        :breadcrumbs="[['label' => $section['content']['meta']['title'] ?? 'News & Announcements']]"
+        :breadcrumbs="[['label' => $section['content']['meta']['title'] ?? 'Berita & Pengumuman']]"
     />
 
     {{-- Search Form --}}
@@ -16,10 +16,10 @@
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
                         {{-- Search Input --}}
                         <div class="lg:col-span-5">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search News</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cari Berita</label>
                             <div class="relative">
                                 <input type="text" wire:model="search"
-                                    placeholder="Search news by title or content..."
+                                    placeholder="Cari berita berdasarkan judul atau konten..."
                                     class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none transition-all dark:text-white">
                                 <svg class="w-5 h-5 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -49,17 +49,17 @@
                                 });
                             }
                         }">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Date</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pilih Tanggal</label>
                             <div class="relative">
                                 <input type="hidden" x-ref="dateInput" wire:model="date">
-                                <input x-ref="picker" type="text" placeholder="Date range..." readonly
+                                <input x-ref="picker" type="text" placeholder="Rentang tanggal..." readonly
                                     class="w-full pl-10 pr-10 py-2.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none transition-all dark:text-white cursor-pointer">
                                 <svg class="w-5 h-5 text-gray-400 absolute left-3 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
                                 <button type="button" @click="if(picker) { picker.clear(); } $wire.set('date', '');" x-show="$wire.date"
                                     class="absolute right-3 top-3 cursor-pointer text-gray-400 hover:text-red-500 transition-colors"
-                                    title="Clear date">
+                                    title="Hapus tanggal">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                     </svg>
@@ -71,12 +71,12 @@
                         <div class="lg:col-span-2 flex items-end gap-2">
                             <button wire:click="$refresh" type="button"
                                 class="flex-1 px-4 py-2.5 bg-teal-600 text-white cursor-pointer font-medium rounded-xl hover:bg-teal-700 transition-colors shadow-lg shadow-teal-600/20">
-                                Refresh
+                                Segarkan
                             </button>
                             @if($search || $date)
                                 <button wire:click="clearSearch(); date = ''" type="button"
                                     class="px-4 py-2.5 bg-gray-100 dark:bg-slate-700 cursor-pointer text-gray-700 dark:text-gray-300 font-medium rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"
-                                    title="Reset Filter text-primary">
+                                    title="Atur Ulang Filter text-primary">
                                     <x-lucide-filter-x class="w-5 h-5" />
                                 </button>
                             @endif
@@ -156,7 +156,7 @@
                                 </p>
 
                                 <span class="hidden md:inline-flex items-center gap-2 text-teal-600 font-semibold hover:text-teal-700 transition-colors group/link">
-                                    Read Full Article
+                                    Baca Selengkapnya
                                     <x-lucide-arrow-right class="w-[18px] h-[18px] group-hover/link:translate-x-1 transition-transform" />
                                 </span>
                             </div>
@@ -167,8 +167,8 @@
                         <div class="w-24 h-24 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
                             <x-lucide-search class="text-gray-400 w-10 h-10" />
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">No articles found</h3>
-                        <p class="text-gray-600 dark:text-gray-400">Try adjusting your search or filter to find what you're looking for.</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Tidak ada berita ditemukan</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Coba sesuaikan pencarian atau filter Anda untuk menemukan apa yang Anda cari.</p>
                     </div>
                 @endforelse
             </div>
@@ -178,8 +178,8 @@
                 <div class="text-center">
                     <button wire:click="loadMore" wire:loading.attr="disabled"
                         class="px-10 py-4 bg-teal-600 text-white rounded-xl font-bold hover:bg-teal-700 transition-all shadow-lg hover:shadow-xl inline-flex items-center gap-2 group">
-                        <span wire:loading.remove>Load More News</span>
-                        <span wire:loading>Loading...</span>
+                        <span wire:loading.remove>Muat Lebih Banyak Berita</span>
+                        <span wire:loading>Memuat...</span>
                         <x-lucide-chevron-down wire:loading.remove class="w-5 h-5 group-hover:translate-y-1 transition-transform" />
                         <svg wire:loading class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

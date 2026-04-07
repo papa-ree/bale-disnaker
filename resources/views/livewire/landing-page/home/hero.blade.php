@@ -13,7 +13,7 @@
 
         // Primary background image (first in array)
         $bgImage = $images[0]['cdn_url'] ?? ($images[0]['path'] ?? null);
-        $altText = $meta['title'] ?? 'Professional workforce';
+        $altText = $meta['title'] ?? 'Tenaga kerja profesional';
     @endphp
 
     <section class="relative min-h-screen flex items-center overflow-hidden">

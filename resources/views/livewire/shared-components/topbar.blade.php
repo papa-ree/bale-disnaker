@@ -17,7 +17,7 @@
             <div class="hidden lg:flex items-center gap-8">
                 <a href="{{ route('index') }}" wire:navigate.hover
                     class="text-base font-medium transition-colors hover:text-teal-600 dark:hover:text-teal-400 {{ request()->routeIs('index') ? 'text-teal-600 dark:text-teal-400' : 'text-gray-700 dark:text-gray-300' }}">
-                    Home
+                    Beranda
                 </a>
 
                 @foreach ($this->availableNavs as $nav)
@@ -80,7 +80,7 @@
             <div class="flex flex-col gap-1">
                 <a href="{{ route('index') }}" @click="mobileMenuOpen = false"
                     class="px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-gray-50 dark:hover:bg-slate-800/50 rounded-lg transition-colors">
-                    Home
+                    Beranda
                 </a>
 
                 @foreach ($this->availableNavs as $nav)

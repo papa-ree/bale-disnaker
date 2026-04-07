@@ -5,7 +5,7 @@
             <a href="{{ route('bale.jobs') }}" wire:navigate.hover
                 class="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 hover:text-teal-600 transition-colors">
                 <x-lucide-arrow-left class="w-4 h-4 mr-2" />
-                Back to Jobs
+                Kembali ke Lowongan
             </a>
         </div>
 
@@ -41,7 +41,7 @@
                         <div class="flex md:hidden flex-col gap-3">
                             <a href="#apply-section"
                                 class="w-full py-3 bg-teal-600 text-white text-center rounded-xl font-semibold">
-                                Apply Now
+                                Lamar Sekarang
                             </a>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                 {{-- Job Description --}}
                 <div
                     class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-slate-700">
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Job Description</h2>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Deskripsi Pekerjaan</h2>
                     <ul class="space-y-3">
                         @foreach($job['description'] as $desc)
                             <li class="flex items-start gap-3 text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -64,7 +64,7 @@
                 {{-- Requirements --}}
                 <div
                     class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-slate-700">
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Requirements</h2>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Persyaratan</h2>
                     <ul class="space-y-3">
                         @foreach($job['requirements'] as $req)
                             <li class="flex items-start gap-3 text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -78,7 +78,7 @@
                 {{-- Documents --}}
                 <div
                     class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-slate-700">
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Required Documents</h2>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Dokumen yang Diperlukan</h2>
                     <ul class="space-y-3">
                         @foreach($job['documents'] as $doc)
                             <li class="flex items-start gap-3 text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -95,7 +95,7 @@
                 {{-- Job Overview --}}
                 <div
                     class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700 sticky top-32">
-                    <h3 class="font-bold text-gray-900 dark:text-white mb-6">Job Overview</h3>
+                    <h3 class="font-bold text-gray-900 dark:text-white mb-6">Ringkasan Pekerjaan</h3>
 
                     <div class="space-y-5">
                         <div class="flex items-start gap-4">
@@ -104,7 +104,7 @@
                                 <x-lucide-coins class="w-5 h-5 text-teal-600 dark:text-teal-400" />
                             </div>
                             <div>
-                                <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Salary</div>
+                                <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Gaji</div>
                                 <div class="font-semibold text-gray-900 dark:text-white">Rp. {{ $job['salary'] }}</div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                                 <x-lucide-tag class="w-5 h-5 text-blue-600 dark:text-blue-400" />
                             </div>
                             <div>
-                                <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Category</div>
+                                <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Kategori</div>
                                 <div class="font-semibold text-gray-900 dark:text-white">{{ $job['category'] }}</div>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                                 <x-lucide-calendar class="w-5 h-5 text-purple-600 dark:text-purple-400" />
                             </div>
                             <div>
-                                <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Posted</div>
+                                <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Ditayangkan</div>
                                 <div class="font-semibold text-gray-900 dark:text-white">
                                     {{ \Carbon\Carbon::parse($job['posted_at'])->format('d M Y') }}
                                 </div>
@@ -135,7 +135,7 @@
                     </div>
 
                     <div class="border-t border-gray-100 dark:border-slate-700 my-6 pt-6">
-                        <h4 class="font-bold text-gray-900 dark:text-white mb-4">How to Apply</h4>
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-4">Cara Melamar</h4>
                         <div
                             class="space-y-3 text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-slate-900/50 p-4 rounded-xl">
                             @foreach($job['apply'] as $info)
@@ -146,12 +146,12 @@
 
                     <a href="{{ $job['url'] }}" target="_blank"
                         class="w-full block py-3 bg-teal-600 hover:bg-teal-700 text-white text-center rounded-xl font-semibold transition-colors shadow-lg shadow-teal-600/20">
-                        Apply Now
+                        Lamar Sekarang
                     </a>
 
                     {{-- Company Info --}}
                     <div class="mt-8 pt-6 border-t border-gray-100 dark:border-slate-700">
-                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">About {{ $job['company'] }}</h4>
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">Tentang {{ $job['company'] }}</h4>
                         <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                             @foreach($job['company_description'] as $desc)
                                 {{ $desc }}

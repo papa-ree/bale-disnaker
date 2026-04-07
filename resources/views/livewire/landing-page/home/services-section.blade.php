@@ -4,7 +4,7 @@
             <div data-aos="fade-up">
                 <div class="container max-w-7xl mx-auto px-4">
                     @if (empty($section) || empty($this->meta))
-                        <x-emperan::section-error title="Services Section Not Found"
+                        <x-emperan::section-error title="Bagian Layanan Tidak Ditemukan"
                             message="Silakan konfigurasi section 'service-section' di panel admin CMS agar layanan dapat ditampilkan." />
                     @else
                         @php
@@ -73,7 +73,7 @@
                                     @if (isset($meta['bantuan']['button']))
                                         <a href="{{ $meta['bantuan']['button']['url'] ?? '#' }}"
                                             class="inline-block px-8 py-4 bg-teal-600 text-white rounded-xl font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl">
-                                            {{ $meta['bantuan']['button']['label'] ?? 'Contact Us' }}
+                                            {{ $meta['bantuan']['button']['label'] ?? 'Hubungi Kami' }}
                                         </a>
                                     @endif
                                 </div>

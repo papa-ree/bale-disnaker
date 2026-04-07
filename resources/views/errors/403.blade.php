@@ -1,6 +1,6 @@
 @extends('bale-disnaker::layouts.error')
 
-@section('title', 'Forbidden')
+@section('title', 'Akses Dilarang')
 
 @section('content')
     <x-bale-disnaker::error-content code="403" title="Akses Dilarang"

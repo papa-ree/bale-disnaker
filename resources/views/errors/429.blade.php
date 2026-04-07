@@ -1,6 +1,6 @@
 @extends('bale-disnaker::layouts.error')
 
-@section('title', 'Too Many Requests')
+@section('title', 'Terlalu Banyak Permintaan')
 
 @section('content')
     <x-bale-disnaker::error-content code="429" title="Terlalu Banyak Permintaan"

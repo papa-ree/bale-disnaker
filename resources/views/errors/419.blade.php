@@ -1,6 +1,6 @@
 @extends('bale-disnaker::layouts.error')
 
-@section('title', 'Session Expired')
+@section('title', 'Sesi Berakhir')
 
 @section('content')
     <x-bale-disnaker::error-content code="419" title="Sesi Berakhir"

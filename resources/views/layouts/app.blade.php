@@ -52,7 +52,7 @@
         x-transition:leave-end="opacity-0 scale-90 translate-y-10"
         @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
         class="fixed bottom-6 right-6 z-50 p-3 bg-teal-600 text-white rounded-xl shadow-xl hover:bg-teal-700 hover:shadow-2xl transition-all duration-300 cursor-pointer group focus:outline-none focus:ring-4 focus:ring-teal-500/20"
-        aria-label="Back to Top" style="display: none;">
+        aria-label="Kembali ke Atas" style="display: none;">
         <x-lucide-chevron-up class="w-6 h-6 group-hover:-translate-y-1 transition-transform duration-300" />
     </div>
 

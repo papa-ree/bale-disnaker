@@ -5,7 +5,7 @@
                 <div class="max-w-4xl mx-auto">
                     @if (empty($section) || empty($this->meta))
                         <x-emperan::section-error
-                            title="Job Search Widget Not Configured"
+                            title="Widget Pencarian Lowongan Belum Dikonfigurasi"
                             message="Silakan konfigurasi section 'job-widget-section' di panel admin CMS agar fungsionalitas pencarian kerja dapat ditampilkan."
                         />
                     @else
@@ -48,13 +48,13 @@
 
                                 <button type="submit"
                                     class="h-14 px-8 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-base rounded-lg transition-colors">
-                                    {{ $meta['buttons'][0]['label'] ?? 'Search Jobs' }}
+                                    {{ $meta['buttons'][0]['label'] ?? 'Cari Lowongan' }}
                                 </button>
                             </div>
 
                             @if (!empty($categories))
                                 <div class="mt-6 flex flex-wrap gap-2 text-center md:text-left justify-center md:justify-start">
-                                    <span class="text-sm text-gray-600 dark:text-gray-400 w-full md:w-auto mb-2 md:mb-0">Popular searches:</span>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400 w-full md:w-auto mb-2 md:mb-0">Pencarian populer:</span>
                                     @foreach ($categories as $cat)
                                         <button type="button" wire:click="searchCategory('{{ $cat }}')"
                                             class="px-3 py-1 bg-gray-100 dark:bg-slate-700 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-700 dark:hover:text-teal-400 text-gray-700 dark:text-gray-300 rounded-full text-sm transition-colors">

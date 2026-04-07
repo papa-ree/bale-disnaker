@@ -12,7 +12,7 @@
                             $meta = $this->meta;
                             $title = $meta['title'] ?? 'Berita Terbaru';
                             $subtitle = $meta['subtitle'] ?? null;
-                            $buttonLabel = $meta['button']['label'] ?? 'View All News';
+                            $buttonLabel = $meta['button']['label'] ?? 'Lihat Semua Berita';
                             $buttonUrl = $meta['button']['url'] ?? route('bale.post-list');
                             if ($buttonUrl === '#') {
                                 $buttonUrl = route('bale.post-list');
@@ -79,7 +79,7 @@
 
                                             <span
                                                 class="inline-flex items-center gap-2 text-teal-600 font-semibold hover:text-teal-700 transition-colors group/link">
-                                                Read Full Article
+                                                Baca Selengkapnya
                                                 <x-lucide-arrow-right
                                                     class="w-[18px] h-[18px] group-hover/link:translate-x-1 transition-transform" />
                                             </span>

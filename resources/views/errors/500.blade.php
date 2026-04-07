@@ -1,6 +1,6 @@
 @extends('bale-disnaker::layouts.error')
 
-@section('title', 'Server Error')
+@section('title', 'Kesalahan Server')
 
 @section('content')
     <x-bale-disnaker::error-content code="500" title="Kesalahan Server"

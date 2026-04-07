@@ -3,7 +3,7 @@
 <aside class="lg:sticky lg:top-28">
     <h3 class="text-xl font-bold text-teal-600 dark:text-white mb-6 flex items-center gap-2">
         <span class="w-1 h-6 bg-teal-600 rounded-full"></span>
-        Suggested Posts
+        Berita Lainnya
     </h3>
 
     <div class="space-y-6">
@@ -35,7 +35,7 @@
                 </div>
             </a>
         @empty
-            <p class="text-sm text-gray-500 italic">No other posts found.</p>
+            <p class="text-sm text-gray-500 italic">Tidak ada berita lain ditemukan.</p>
         @endforelse
     </div>
 </aside>

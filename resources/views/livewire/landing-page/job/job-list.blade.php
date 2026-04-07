@@ -3,10 +3,10 @@
         {{-- Page Header --}}
         <div class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-                {{ $meta['title'] ?? 'Job Vacancies' }}
+                {{ $meta['title'] ?? 'Lowongan Kerja' }}
             </h1>
             <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                {{ $meta['subtitle'] ?? 'Discover exciting career opportunities in Ponorogo' }}
+                {{ $meta['subtitle'] ?? 'Temukan peluang karir yang menarik di Ponorogo' }}
             </p>
         </div>
 
@@ -17,7 +17,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
                     {{-- Search Input --}}
                     <div class="md:col-span-5 relative">
-                        <input type="text" placeholder="Job title or company..." wire:model="searchQuery"
+                        <input type="text" placeholder="Judul pekerjaan atau perusahaan..." wire:model="searchQuery"
                             class="w-full pl-12 h-14 pr-4 py-2.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none transition-all dark:text-white">
                         <svg class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
@@ -68,29 +68,29 @@
                 {{-- Active Filters --}}
                 @if ($searchQuery || $selectedType !== 'All' || $selectedCategory !== 'All')
                     <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-200 dark:border-slate-700">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Active filters:</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Filter aktif:</span>
                         @if ($searchQuery)
                             <span
                                 class="px-3 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 rounded-full text-sm">
-                                Search: "{{ $searchQuery }}"
+                                Cari: "{{ $searchQuery }}"
                             </span>
                         @endif
                         @if ($selectedType !== 'All')
                             <span
                                 class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full text-sm">
-                                Type: {{ $selectedType }}
+                                Tipe: {{ $selectedType }}
                             </span>
                         @endif
                         @if ($selectedCategory !== 'All')
                             <span
                                 class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-sm">
-                                Category: {{ $selectedCategory }}
+                                Kategori: {{ $selectedCategory }}
                             </span>
                         @endif
                         <button type="button" wire:click="clearFilters"
                             class="ml-auto text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center gap-1 transition-colors">
                             <x-lucide-x class="w-4 h-4" />
-                            Clear all
+                            Hapus semua
                         </button>
                     </div>
                 @endif
@@ -100,8 +100,8 @@
         {{-- Results Count --}}
         <div class="max-w-5xl mx-auto mb-8">
             <p class="text-gray-600 dark:text-gray-400">
-                Found <span class="font-semibold text-gray-900 dark:text-white">{{ count($jobs) }}</span>
-                {{ count($jobs) === 1 ? 'job' : 'jobs' }}
+                Ditemukan <span class="font-semibold text-gray-900 dark:text-white">{{ count($jobs) }}</span>
+                {{ count($jobs) === 1 ? 'lowongan' : 'lowongan' }}
             </p>
         </div>
 
@@ -201,7 +201,7 @@
                                     <a href="{{ route('bale.view-job', $job['id']) }}"
                                         class="w-full md:w-auto px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-colors inline-block text-center"
                                         wire:navigate>
-                                        View Details
+                                        Lihat Detail
                                     </a>
                                 </div>
                             </div>
@@ -214,13 +214,13 @@
                         class="w-24 h-24 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-100 dark:border-slate-700">
                         <x-lucide-search class="text-gray-400 w-10 h-10" />
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">No jobs found</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Tidak ada lowongan ditemukan</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-6">
-                        Try adjusting your search or filters to find what you're looking for.
+                        Coba sesuaikan pencarian atau filter Anda untuk menemukan apa yang Anda cari.
                     </p>
                     <button wire:click="clearFilters"
                         class="inline-flex px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-semibold transition-colors">
-                        Clear Filters
+                        Hapus Filter
                     </button>
                 </div>
             @endif

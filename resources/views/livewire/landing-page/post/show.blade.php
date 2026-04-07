@@ -78,7 +78,7 @@
                                     </div>
                                     {{-- <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-sm">
                                         <x-lucide-eye class="w-4 h-4" />
-                                        <span>{{ number_format($post->views ?? 0) }} Views</span>
+                                        <span>{{ number_format($post->views ?? 0) }} Dilihat</span>
                                     </div> --}}
                                 </div>
 
