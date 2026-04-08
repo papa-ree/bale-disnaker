@@ -24,23 +24,25 @@ class JobDetail extends Component
 
     public function getJob($id)
     {
-        $section = Section::whereSlug('job-vacancies-section')->first();
+        $section = Section::whereSlug('job-vacancies-page')->first();
         if (!$section)
             return null;
 
-        $items = $section->content['items'] ?? [];
+        $contentItems = $section->content['items'] ?? [];
 
-        // Normalize items
-        if (isset($items['jobs']))
-            $items = $items['jobs'];
-        elseif (isset($items['data']))
-            $items = $items['data'];
+        // Normalize items if they are numeric list or nested
+        $items = $contentItems;
+        if (isset($contentItems['jobs']))
+            $items = $contentItems['jobs'];
+        elseif (isset($contentItems['data']))
+            $items = $contentItems['data'];
 
         if (!is_array($items))
             return null;
 
         $foundItem = collect($items)->first(function ($item) use ($id) {
-            return isset($item['id'][0]) && $item['id'][0] == $id;
+            $itemId = is_array($item['id'] ?? null) ? ($item['id'][0] ?? null) : ($item['id'] ?? null);
+            return $itemId == $id;
         });
 
         if (!$foundItem)
@@ -48,7 +50,7 @@ class JobDetail extends Component
 
         // Map item to usable format
         return [
-            'id' => $foundItem['id'][0] ?? $id,
+            'id' => is_array($foundItem['id'] ?? null) ? ($foundItem['id'][0] ?? $id) : ($foundItem['id'] ?? $id),
             'title' => $foundItem['nama pekerjaan'][0] ?? 'Untitled',
             'company' => $foundItem['nama perusahaan'][0] ?? 'Unknown Company',
             'location' => $foundItem['lokasi'][0] ?? 'Ponorogo',
