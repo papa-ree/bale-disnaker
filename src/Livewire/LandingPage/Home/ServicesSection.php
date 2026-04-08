@@ -28,24 +28,30 @@ class ServicesSection extends Component
     public function meta()
     {
         $defaultMeta = [
-            'title' => 'Our Services',
-            'subtitle' => 'Comprehensive workforce solutions designed to empower both job seekers and employers',
-            'bantuan' => [
-                'title' => 'Need Help with Our Services?',
-                'subtitle' => 'Our team is ready to assist you with employment services, training programs, and workforce solutions.',
-                'button' => [
-                    'label' => 'Contact Us Today',
-                    'url' => '#contact'
-                ]
-            ]
+            'title' => 'Layanan Kami',
+            'subtitle' => 'Solusi tenaga kerja komprehensif yang dirancang untuk memberdayakan pencari kerja dan pemberi kerja.',
+            'custom' => [
+                'columns' => 3,
+                'icon_style' => 'outline',
+                'judul_bantuan' => 'Butuh bantuan dengan layanan kami?',
+                'deskripsi_bantuan' => 'Tim kami siap membantu Anda dengan layanan ketenagakerjaan, program pelatihan, dan solusi tenaga kerja.'
+            ],
+            'buttons' => []
         ];
 
         $contentMeta = $this->section['meta'] ?? [];
 
-        $meta = array_merge($defaultMeta, array_intersect_key($contentMeta, $defaultMeta));
+        // Gabungkan seluruh data, jangan dibatasi dengan array_intersect_key
+        $meta = array_merge($defaultMeta, $contentMeta);
 
-        if (isset($contentMeta['bantuan'])) {
-            $meta['bantuan'] = array_merge($defaultMeta['bantuan'], $contentMeta['bantuan']);
+        // Merge array custom secara terpisah agar keys default-nya tetap ada
+        if (isset($contentMeta['custom']) && is_array($contentMeta['custom'])) {
+            $meta['custom'] = array_merge($defaultMeta['custom'], $contentMeta['custom']);
+        }
+
+        // Tumpukkan eksplisit untuk index-based array agar array_merge tidak menyebabkan elemen terduplikat (append)
+        if (isset($contentMeta['buttons'])) {
+            $meta['buttons'] = $contentMeta['buttons'];
         }
 
         return $meta;

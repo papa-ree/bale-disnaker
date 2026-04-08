@@ -16,26 +16,30 @@ class Index extends Component
 
         $services = [];
         $meta = [
-            'title' => 'Our Services',
-            'subtitle' => 'Comprehensive workforce solutions designed to empower both job seekers and employers',
-            'bantuan' => [
-                'title' => 'Need Help with Our Services?',
-                'subtitle' => 'Our team is ready to assist you with employment services, training programs, and workforce solutions.',
-                'button' => [
-                    'label' => 'Contact Us Today',
-                    'url' => '#contact'
-                ]
-            ]
+            'title' => 'Layanan Kami',
+            'subtitle' => 'Solusi tenaga kerja komprehensif yang dirancang untuk memberdayakan pencari kerja dan pemberi kerja.',
+            'custom' => [
+                'columns' => 3,
+                'icon_style' => 'outline',
+                'judul_bantuan' => 'Butuh bantuan dengan layanan kami?',
+                'deskripsi_bantuan' => 'Tim kami siap membantu Anda dengan layanan ketenagakerjaan, program pelatihan, dan solusi tenaga kerja.'
+            ],
+            'buttons' => []
         ];
 
         if ($section && isset($section->content)) {
             $content = $section->content;
 
             if (isset($content['meta'])) {
-                $meta['title'] = $content['meta']['title'] ?? $meta['title'];
-                $meta['subtitle'] = $content['meta']['subtitle'] ?? $meta['subtitle'];
-                if (isset($content['meta']['bantuan'])) {
-                    $meta['bantuan'] = array_merge($meta['bantuan'], $content['meta']['bantuan']);
+                $contentMeta = $content['meta'];
+                $meta = array_merge($meta, $contentMeta);
+
+                if (isset($contentMeta['custom']) && is_array($contentMeta['custom'])) {
+                    $meta['custom'] = array_merge($meta['custom'], $contentMeta['custom']);
+                }
+
+                if (isset($contentMeta['buttons'])) {
+                    $meta['buttons'] = $contentMeta['buttons'];
                 }
             }
 

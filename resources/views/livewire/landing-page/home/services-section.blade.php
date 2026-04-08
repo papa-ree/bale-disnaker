@@ -58,27 +58,36 @@
                         </div>
 
                         {{-- CTA Section --}}
-                        @if (isset($meta['bantuan']))
+                        {{-- @if (!empty($meta['custom']['judul_bantuan']) || !empty($meta['custom']['deskripsi_bantuan'])) --}}
                             <div class="mt-16 text-center">
                                 <div
                                     class="inline-block bg-linear-to-r from-teal-50 to-blue-50 dark:from-slate-800 dark:to-slate-800/50 rounded-2xl p-8 md:p-12">
-                                    <h3 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                                        {{ $meta['bantuan']['title'] ?? '' }}
-                                    </h3>
-                                    @if (isset($meta['bantuan']['subtitle']))
+                                    @if (!empty($meta['custom']['judul_bantuan']))
+                                        <h3 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                                            {{ $meta['custom']['judul_bantuan'] }}
+                                        </h3>
+                                    @endif
+                                    @if (!empty($meta['custom']['deskripsi_bantuan']))
                                         <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-xl mx-auto">
-                                            {{ $meta['bantuan']['subtitle'] }}
+                                            {{ $meta['custom']['deskripsi_bantuan'] }}
                                         </p>
                                     @endif
-                                    @if (isset($meta['bantuan']['button']))
-                                        <a href="{{ $meta['bantuan']['button']['url'] ?? '#' }}"
-                                            class="inline-block px-8 py-4 bg-teal-600 text-white rounded-xl font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl">
-                                            {{ $meta['bantuan']['button']['label'] ?? 'Hubungi Kami' }}
-                                        </a>
+                                    @if (!empty($meta['buttons']))
+                                        <div class="flex flex-wrap justify-center gap-4">
+                                            @foreach (array_filter($meta['buttons'], fn($b) => $b['show'] ?? true) as $button)
+                                                <a href="{{ $button['url'] ?? '#' }}" {{ Str::startsWith($button['url'] ?? '', '/') ? 'wire:navigate.hover' : '' }}
+                                                    class="{{ !empty($button['class']) ? $button['class'] : 'inline-flex items-center justify-center gap-2 px-8 py-4 bg-teal-600 text-white rounded-xl font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl' }}">
+                                                    @if (!empty($button['icon']))
+                                                        <x-dynamic-component :component="'lucide-' . $button['icon']" class="w-[22px] h-[22px]" />
+                                                    @endif
+                                                    {{ $button['label'] ?? 'Hubungi Kami Sekarang' }}
+                                                </a>
+                                            @endforeach
+                                        </div>
                                     @endif
                                 </div>
                             </div>
-                        @endif
+                        {{-- @endif --}}
                     @endif
                 </div>
             </div>
