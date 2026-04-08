@@ -58,7 +58,7 @@
                         </div>
 
                         {{-- CTA Section --}}
-                        {{-- @if (!empty($meta['custom']['judul_bantuan']) || !empty($meta['custom']['deskripsi_bantuan'])) --}}
+                        @if (!empty($meta['custom']['judul_bantuan']) || !empty($meta['custom']['deskripsi_bantuan']))
                             <div class="mt-16 text-center">
                                 <div
                                     class="inline-block bg-linear-to-r from-teal-50 to-blue-50 dark:from-slate-800 dark:to-slate-800/50 rounded-2xl p-8 md:p-12">
@@ -87,7 +87,7 @@
                                     @endif
                                 </div>
                             </div>
-                        {{-- @endif --}}
+                        @endif
                     @endif
                 </div>
             </div>
