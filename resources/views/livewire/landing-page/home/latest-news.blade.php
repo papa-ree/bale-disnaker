@@ -74,7 +74,7 @@
                                                 {{ $post->title }}
                                             </h3>
                                             <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                                                {{ $post->excerpt(120) }}
+                                                {{ $post->getExcerpt(120) }}
                                             </p>
 
                                             <span
