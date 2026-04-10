@@ -63,7 +63,8 @@
                     <div class="flex flex-col sm:flex-row gap-4">
                         @foreach ($buttons as $index => $button)
                             @if ($index === 0)
-                                <a href="{{ $button['url'] ?? '#' }}" {{ Str::startsWith($button['url'] ?? '', '/') ? 'wire:navigate.hover' : '' }}
+                                <a href="{{ $button['url'] ?? '#' }}" {{ $button['navigate'] ?? '' }}
+                                    @if(!empty($button['target'])) target="{{ $button['target'] }}" rel="noopener noreferrer" @endif
                                     class="group px-8 py-4 bg-teal-600 text-white rounded-xl font-semibold text-lg hover:bg-teal-700 transition-all hover:shadow-lg hover:shadow-teal-600/30 flex items-center justify-center gap-2">
                                     @if (!empty($button['icon']))
                                         <x-dynamic-component :component="'lucide-' . $button['icon']" class="w-[22px] h-[22px]" />
@@ -74,7 +75,8 @@
                                     <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
                                 </a>
                             @else
-                                <a href="{{ $button['url'] ?? '#' }}" {{ Str::startsWith($button['url'] ?? '', '/') ? 'wire:navigate.hover' : '' }}
+                                <a href="{{ $button['url'] ?? '#' }}" {{ $button['navigate'] ?? '' }}
+                                    @if(!empty($button['target'])) target="{{ $button['target'] }}" rel="noopener noreferrer" @endif
                                     class="px-8 py-4 bg-white/10 backdrop-blur-sm text-white border-2 border-white/20 rounded-xl font-semibold text-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2">
                                     @if (!empty($button['icon']))
                                         <x-dynamic-component :component="'lucide-' . $button['icon']" class="w-[22px] h-[22px]" />

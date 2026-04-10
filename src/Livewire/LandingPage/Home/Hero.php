@@ -32,7 +32,20 @@ class Hero extends Component
     #[Computed]
     public function meta()
     {
-        return $this->section['meta'] ?? [];
+        $meta = $this->section['meta'] ?? [];
+
+        if (isset($meta['buttons']) && is_array($meta['buttons'])) {
+            $meta['buttons'] = collect($meta['buttons'])->map(function ($button) {
+                $rawUrl = $button['url'] ?? '#';
+                $isExternal = str_starts_with($rawUrl, 'http');
+                $button['url'] = $isExternal || $rawUrl === '#' ? $rawUrl : url($rawUrl);
+                $button['navigate'] = !$isExternal && $rawUrl !== '#' ? 'wire:navigate.hover' : '';
+                $button['target'] = $isExternal ? '_blank' : '';
+                return $button;
+            })->toArray();
+        }
+
+        return $meta;
     }
 
     #[Computed]

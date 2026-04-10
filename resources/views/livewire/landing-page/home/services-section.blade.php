@@ -26,8 +26,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up"
                             data-aos-offset="200" data-aos-delay="200" data-aos-duration="1000">
                             @foreach ($services as $index => $service)
-                                <a href="{{ $service['url'] }}"
-                                    {{ $service['is_external'] ? 'target="_blank" rel="noopener noreferrer"' : 'wire:navigate.hover' }}
+                                <a href="{{ $service['url'] }}" {{ $service['navigate'] }}
+                                    @if($service['target']) target="{{ $service['target'] }}" rel="noopener noreferrer" @endif
                                     class="group relative block bg-white dark:bg-slate-800 rounded-2xl p-8 border border-gray-200 dark:border-slate-700 hover:border-transparent hover:shadow-2xl transition-all duration-300 overflow-hidden"
                                     style="animation-delay: {{ $index * 100 }}ms">
                                     {{-- Background Gradient on Hover --}}
@@ -76,7 +76,8 @@
                                     @if (!empty($meta['buttons']))
                                         <div class="flex flex-wrap justify-center gap-4">
                                             @foreach (array_filter($meta['buttons'], fn($b) => $b['show'] ?? true) as $button)
-                                                <a href="{{ $button['url'] ?? '#' }}" {{ Str::startsWith($button['url'] ?? '', '/') ? 'wire:navigate.hover' : '' }}
+                                                <a href="{{ $button['url'] ?? '#' }}" {{ $button['navigate'] ?? '' }}
+                                                    @if(!empty($button['target'])) target="{{ $button['target'] }}" rel="noopener noreferrer" @endif
                                                     class="{{ !empty($button['class']) ? $button['class'] : 'inline-flex items-center justify-center gap-2 px-8 py-4 bg-teal-600 text-white rounded-xl font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl' }}">
                                                     @if (!empty($button['icon']))
                                                         <x-dynamic-component :component="'lucide-' . $button['icon']" class="w-[22px] h-[22px]" />

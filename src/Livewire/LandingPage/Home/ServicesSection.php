@@ -50,8 +50,15 @@ class ServicesSection extends Component
         }
 
         // Tumpukkan eksplisit untuk index-based array agar array_merge tidak menyebabkan elemen terduplikat (append)
-        if (isset($contentMeta['buttons'])) {
-            $meta['buttons'] = $contentMeta['buttons'];
+        if (isset($contentMeta['buttons']) && is_array($contentMeta['buttons'])) {
+            $meta['buttons'] = collect($contentMeta['buttons'])->map(function ($button) {
+                $rawUrl = $button['url'] ?? '#';
+                $isExternal = str_starts_with($rawUrl, 'http');
+                $button['url'] = $isExternal || $rawUrl === '#' ? $rawUrl : url($rawUrl);
+                $button['navigate'] = !$isExternal && $rawUrl !== '#' ? 'wire:navigate.hover' : '';
+                $button['target'] = $isExternal ? '_blank' : '';
+                return $button;
+            })->toArray();
         }
 
         return $meta;
@@ -77,6 +84,8 @@ class ServicesSection extends Component
             $rawUrl = is_array($item[$urlKey] ?? null) ? ($item[$urlKey][0] ?? '#') : ($item[$urlKey] ?? '#');
             $isExternal = str_starts_with($rawUrl, 'http');
             $url = $isExternal || $rawUrl === '#' ? $rawUrl : url($rawUrl);
+            $navigate = !$isExternal && $rawUrl !== '#' ? 'wire:navigate.hover' : '';
+            $target = $isExternal ? '_blank' : '';
 
             return [
                 'title' => $title,
@@ -84,6 +93,8 @@ class ServicesSection extends Component
                 'icon' => $icon,
                 'url' => $url,
                 'is_external' => $isExternal,
+                'navigate' => $navigate,
+                'target' => $target,
                 'color' => $colors[$index % count($colors)]
             ];
         });
