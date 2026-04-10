@@ -22,7 +22,7 @@
                                 <div x-data="{
                                     copied: false,
                                     share() {
-                                        const text = `{{ $post->title }}\n\n{{ $post->excerpt(160) }}\n\nInfo lebih lanjut: {{ route('bale.view-post', $post->slug) }}`;
+                                        const text = `{{ $post->title }}\n\n{{ $post->getExcerpt(160) }}\n\nInfo lebih lanjut: {{ route('bale.view-post', $post->slug) }}`;
                                         if (navigator.share) {
                                             navigator.share({
                                                 title: '{{ $post->title }}',

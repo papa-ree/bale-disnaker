@@ -152,7 +152,7 @@
                                 </h3>
 
                                 <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 hidden md:block">
-                                    {{ $post->excerpt(120) }}
+                                    {{ $post->getExcerpt(120) }}
                                 </p>
 
                                 <span class="hidden md:inline-flex items-center gap-2 text-teal-600 font-semibold hover:text-teal-700 transition-colors group/link">

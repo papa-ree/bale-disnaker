@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gray-50 dark:bg-slate-900">
     {{-- header --}}
     <x-bale-disnaker::header-page :title="$page->title" :breadcrumbs="[['label' => $page->title]]"
-        :subtitle="$page->excerpt" />
+        :subtitle="$page->getExcerpt()" />
 
     {{-- Page Content Section --}}
     <section class="py-12 md:py-16">
