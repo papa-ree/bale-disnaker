@@ -26,7 +26,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up"
                             data-aos-offset="200" data-aos-delay="200" data-aos-duration="1000">
                             @foreach ($services as $index => $service)
-                                <a href="{{ $service['url'] }}" wire:navigate.hover
+                                <a href="{{ $service['url'] }}"
+                                    {{ $service['is_external'] ? 'target="_blank" rel="noopener noreferrer"' : 'wire:navigate.hover' }}
                                     class="group relative block bg-white dark:bg-slate-800 rounded-2xl p-8 border border-gray-200 dark:border-slate-700 hover:border-transparent hover:shadow-2xl transition-all duration-300 overflow-hidden"
                                     style="animation-delay: {{ $index * 100 }}ms">
                                     {{-- Background Gradient on Hover --}}

@@ -74,13 +74,16 @@ class ServicesSection extends Component
             $title = is_array($item[$titleKey] ?? null) ? ($item[$titleKey][0] ?? '') : ($item[$titleKey] ?? '');
             $description = is_array($item[$descKey] ?? null) ? ($item[$descKey][0] ?? '') : ($item[$descKey] ?? '');
             $icon = is_array($item[$iconKey] ?? null) ? ($item[$iconKey][0] ?? 'circle') : ($item[$iconKey] ?? 'circle');
-            $url = is_array($item[$urlKey] ?? null) ? ($item[$urlKey][0] ?? '#') : ($item[$urlKey] ?? '#');
+            $rawUrl = is_array($item[$urlKey] ?? null) ? ($item[$urlKey][0] ?? '#') : ($item[$urlKey] ?? '#');
+            $isExternal = str_starts_with($rawUrl, 'http');
+            $url = $isExternal || $rawUrl === '#' ? $rawUrl : url($rawUrl);
 
             return [
                 'title' => $title,
                 'description' => $description,
                 'icon' => $icon,
                 'url' => $url,
+                'is_external' => $isExternal,
                 'color' => $colors[$index % count($colors)]
             ];
         });
