@@ -34,6 +34,9 @@ class Show extends Component
 
     public function render()
     {
-        return view('bale-disnaker::livewire.landing-page.post.show');
+        return view('bale-disnaker::livewire.landing-page.post.show')->layout('bale-disnaker::layouts.app', [
+            'title' => $this->post->title,
+            'seoModel' => $this->post,
+        ]);
     }
 }

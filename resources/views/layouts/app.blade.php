@@ -5,7 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ $title ?? 'Dinas Tenaga Kerja Kabupaten Ponorogo' }}</title>
+    <x-emperan::seo-meta 
+        :model="$seoModel ?? null" 
+        :defaults="[
+            'title' => $title ?? 'Dinas Tenaga Kerja Kabupaten Ponorogo', 
+            'image' => cdn_asset('shared/logo-png.png')
+        ]" 
+    />
     <link rel="icon" type="image/x-icon" href="{{ cdn_asset('shared/favicon.ico') }}"
         referrerpolicy="{{ app()->isLocal() ? 'no-referrer' : 'strict-origin-when-cross-origin' }}">
 
