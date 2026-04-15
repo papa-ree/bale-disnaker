@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <x-emperan::seo-meta 
+    <x-seo::seo-meta 
         :model="$seoModel ?? null" 
         :defaults="[
             'title' => $title ?? 'Dinas Tenaga Kerja Kabupaten Ponorogo', 
