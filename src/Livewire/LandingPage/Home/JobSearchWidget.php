@@ -5,6 +5,7 @@ namespace Paparee\BaleDisnaker\Livewire\LandingPage\Home;
 use Livewire\Component;
 use Livewire\Attributes\Computed;
 use Bale\Emperan\Models\Section;
+use Illuminate\Support\Facades\DB;
 
 class JobSearchWidget extends Component
 {
@@ -32,33 +33,29 @@ class JobSearchWidget extends Component
     }
 
     /**
-     * Parse items (array-wrapped values) into stats.
-     * Uses keys 'nilai' and 'nama stat' as seen in the database output.
+     * Ambil statistik dinamis dari database.
      */
     #[Computed]
     public function stats()
     {
-        $items = $this->section['items'] ?? [];
-        $stats = [];
-
-        foreach ($items as $item) {
-            $label = is_array($item['nama stat'] ?? null)
-                ? ($item['nama stat'][0] ?? null)
-                : ($item['nama stat'] ?? null);
-
-            $value = is_array($item['nilai'] ?? null)
-                ? ($item['nilai'][0] ?? null)
-                : ($item['nilai'] ?? null);
-
-            if ($label !== null && $value !== null) {
-                $stats[] = [
-                    'label' => $label,
-                    'value' => $value
-                ];
-            }
-        }
-
-        return $stats;
+        return [
+            [
+                'label' => 'Total Lowongan',
+                'value' => DB::table('loker')->whereNull('deleted_at')->where('actived', 1)->count(),
+            ],
+            [
+                'label' => 'Perusahaan',
+                'value' => DB::table('loker_companies')->whereNull('deleted_at')->where('actived', 1)->count(),
+            ],
+            [
+                'label' => 'Kategori',
+                'value' => DB::table('loker_categories')->whereNull('deleted_at')->where('actived', 1)->count(),
+            ],
+            [
+                'label' => 'Tipe Pekerjaan',
+                'value' => DB::table('loker_types')->whereNull('deleted_at')->where('actived', 1)->count(),
+            ],
+        ];
     }
 
     /**
@@ -68,28 +65,16 @@ class JobSearchWidget extends Component
     #[Computed]
     public function categories()
     {
-        // Try to fetch from job-vacancies-section as categories usually live there
-        $vacancies = Section::whereSlug('job-vacancies-section')->first();
-
-        if ($vacancies && isset($vacancies->content['items'])) {
-            $items = $vacancies->content['items'];
-
-            // Handle if items is nested
-            $jobs = $items['jobs'] ?? ($items['data'] ?? $items);
-
-            if (is_array($jobs)) {
-                return collect($jobs)
-                    ->pluck('kategori') // or 'category' if mapped differently
-                    ->flatten()
-                    ->filter()
-                    ->unique()
-                    ->values()
-                    ->take(5)
-                    ->toArray();
-            }
-        }
-
-        return [];
+        return DB::table('loker')
+            ->whereNull('deleted_at')
+            ->where('actived', 1)
+            ->distinct()
+            ->orderBy('kategory')
+            ->pluck('kategory')
+            ->filter()
+            ->values()
+            ->take(5)
+            ->toArray();
     }
 
     public function search()

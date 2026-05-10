@@ -19,7 +19,7 @@ Route::middleware(['web'])->group(function () {
         Route::get('posts', PostList::class)->name('post-list');
         Route::get('post/{post}', PostShow::class)->name('view-post');
         Route::get('jobs', JobList::class)->name('jobs');
-        Route::get('jobs/{id}', JobDetail::class)->name('view-job');
+        Route::get('jobs/{slug}', JobDetail::class)->name('view-job');
         Route::get('services', ServiceIndex::class)->name('services');
     });
 });

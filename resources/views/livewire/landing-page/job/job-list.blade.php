@@ -100,8 +100,8 @@
         {{-- Results Count --}}
         <div class="max-w-5xl mx-auto mb-8">
             <p class="text-gray-600 dark:text-gray-400">
-                Ditemukan <span class="font-semibold text-gray-900 dark:text-white">{{ count($jobs) }}</span>
-                {{ count($jobs) === 1 ? 'lowongan' : 'lowongan' }}
+                Ditemukan <span class="font-semibold text-gray-900 dark:text-white">{{ $jobs->total() }}</span>
+                lowongan
             </p>
         </div>
 
@@ -110,7 +110,7 @@
             class="max-w-5xl mx-auto space-y-6 mb-8">
             @for ($i = 0; $i < 3; $i++)
                 <div
-                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 shadow-md border border-gray-100 dark:border-slate-700 animate-pulse">
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 shadow-md border border-gray-100 dark:border-slate-700">
                     <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                         <div class="flex-1">
                             <div class="h-8 bg-gray-200 dark:bg-slate-700 rounded w-1/3 mb-4"></div>
@@ -144,7 +144,7 @@
 
         {{-- Jobs List --}}
         <div wire:loading.remove wire:target="searchQuery, selectedType, selectedCategory, $refresh, clearFilters">
-            @if (count($jobs) > 0)
+            @if ($jobs->count() > 0)
                 <div class="max-w-5xl mx-auto space-y-6">
                     @foreach ($jobs as $job)
                         <article
@@ -155,50 +155,66 @@
                                     <div class="mb-4">
                                         <h3
                                             class="text-2xl font-bold text-gray-900 dark:text-white mb-2 hover:text-teal-700 dark:hover:text-teal-400 transition-colors">
-                                            {{ $job['title'] }}
+                                            {{ $job->nama_pekerjaan }}
                                         </h3>
-                                        <p class="text-lg text-gray-700 dark:text-gray-300 font-medium">{{ $job['company'] }}
+                                        <p class="text-lg text-gray-700 dark:text-gray-300 font-medium">
+                                            {{ $job->nama_perusahaan }}
                                         </p>
                                     </div>
 
                                     {{-- Job Details --}}
                                     <div class="flex flex-wrap gap-4 mb-4 text-gray-600 dark:text-gray-400">
-                                        <div class="flex items-center gap-2">
-                                            <x-lucide-map-pin class="w-[18px] h-[18px] text-teal-600 dark:text-teal-400" />
-                                            <span>{{ $job['location'] }}</span>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <x-lucide-briefcase class="w-[18px] h-[18px] text-blue-600 dark:text-blue-400" />
-                                            <span>{{ $job['type'] }}</span>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <x-lucide-dollar-sign
-                                                class="w-[18px] h-[18px] text-green-600 dark:text-green-400" />
-                                            <span>{{ $job['salary'] }}</span>
-                                        </div>
+                                        @if ($job->lokasi)
+                                            <div class="flex items-center gap-2">
+                                                <x-lucide-map-pin class="w-[18px] h-[18px] text-teal-600 dark:text-teal-400" />
+                                                <span>{{ $job->lokasi }}</span>
+                                            </div>
+                                        @endif
+                                        @if ($job->tipe)
+                                            <div class="flex items-center gap-2">
+                                                <x-lucide-briefcase class="w-[18px] h-[18px] text-blue-600 dark:text-blue-400" />
+                                                <span class="capitalize">{{ $job->tipe }}</span>
+                                            </div>
+                                        @endif
+                                        @if ($job->gaji)
+                                            <div class="flex items-center gap-2">
+                                                <x-lucide-coins class="w-[18px] h-[18px] text-green-600 dark:text-green-400" />
+                                                <span>{{ $job->gaji }}</span>
+                                            </div>
+                                        @endif
                                         <div class="flex items-center gap-2">
                                             <x-lucide-clock class="w-[18px] h-[18px] text-purple-600 dark:text-purple-400" />
-                                            <span>{{ \Carbon\Carbon::parse($job['postedDate'])->diffForHumans() }}</span>
+                                            <span>{{ \Carbon\Carbon::parse($job->created_at)->diffForHumans() }}</span>
                                         </div>
                                     </div>
 
                                     {{-- Job Description --}}
-                                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
-                                        {{ $job['description'] }}
-                                    </p>
+                                    @if ($job->deskripsi_pekerjaan)
+                                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2">
+                                            {{ $job->deskripsi_pekerjaan }}
+                                        </p>
+                                    @endif
 
-                                    {{-- Category Badge --}}
-                                    <div class="flex gap-2">
-                                        <span
-                                            class="px-3 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 rounded-full text-sm font-medium">
-                                            {{ $job['category'] }}
-                                        </span>
+                                    {{-- Badges --}}
+                                    <div class="flex flex-wrap gap-2">
+                                        @if ($job->kategory)
+                                            <span
+                                                class="px-3 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 rounded-full text-sm font-medium capitalize">
+                                                {{ $job->kategory }}
+                                            </span>
+                                        @endif
+                                        @if ($job->tgl_berakhir)
+                                            <span
+                                                class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-sm font-medium">
+                                                Batas: {{ \Carbon\Carbon::parse($job->tgl_berakhir)->format('d M Y') }}
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
 
-                                {{-- Apply Button --}}
-                                <div class="md:ml-6">
-                                    <a href="{{ route('bale.view-job', $job['id']) }}"
+                                {{-- Detail Button --}}
+                                <div class="md:ml-6 shrink-0">
+                                    <a href="{{ route('bale.view-job', $job->slug) }}"
                                         class="w-full md:w-auto px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-colors inline-block text-center"
                                         wire:navigate>
                                         Lihat Detail
@@ -207,6 +223,11 @@
                             </div>
                         </article>
                     @endforeach
+                </div>
+
+                {{-- Pagination --}}
+                <div class="max-w-5xl mx-auto mt-10">
+                    {{ $jobs->links() }}
                 </div>
             @else
                 <div class="max-w-5xl mx-auto text-center py-16">
@@ -226,5 +247,4 @@
             @endif
         </div>
     </div>
-</div>
 </div>

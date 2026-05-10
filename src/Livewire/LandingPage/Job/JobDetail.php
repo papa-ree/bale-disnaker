@@ -4,68 +4,31 @@ namespace Paparee\BaleDisnaker\Livewire\LandingPage\Job;
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-use Bale\Emperan\Models\Section;
+use Illuminate\Support\Facades\DB;
 
 #[Layout('bale-disnaker::layouts.app')]
 class JobDetail extends Component
 {
-    public $jobId;
-    public $job;
+    public string $slug;
+    public ?object $job = null;
 
-    public function mount($id)
+    public function mount(string $slug): void
     {
-        $this->jobId = $id;
-        $this->job = $this->getJob($id);
+        $this->slug = $slug;
+        $this->job  = $this->getJob($slug);
 
         if (!$this->job) {
-            return redirect()->route('bale.jobs');
+            redirect()->route('bale.jobs');
         }
     }
 
-    public function getJob($id)
+    protected function getJob(string $slug): ?object
     {
-        $section = Section::whereSlug('job-vacancies-page')->first();
-        if (!$section)
-            return null;
-
-        $contentItems = $section->content['items'] ?? [];
-
-        // Normalize items if they are numeric list or nested
-        $items = $contentItems;
-        if (isset($contentItems['jobs']))
-            $items = $contentItems['jobs'];
-        elseif (isset($contentItems['data']))
-            $items = $contentItems['data'];
-
-        if (!is_array($items))
-            return null;
-
-        $foundItem = collect($items)->first(function ($item) use ($id) {
-            $itemId = is_array($item['id'] ?? null) ? ($item['id'][0] ?? null) : ($item['id'] ?? null);
-            return $itemId == $id;
-        });
-
-        if (!$foundItem)
-            return null;
-
-        // Map item to usable format
-        return [
-            'id' => is_array($foundItem['id'] ?? null) ? ($foundItem['id'][0] ?? $id) : ($foundItem['id'] ?? $id),
-            'title' => $foundItem['nama pekerjaan'][0] ?? 'Untitled',
-            'company' => $foundItem['nama perusahaan'][0] ?? 'Unknown Company',
-            'location' => $foundItem['lokasi'][0] ?? 'Ponorogo',
-            'type' => $foundItem['tipe'][0] ?? 'Full-time',
-            'category' => $foundItem['kategori'][0] ?? 'General',
-            'salary' => $foundItem['gaji'][0] ?? 'Negotiable',
-            'description' => $foundItem['deskripsi pekerjaan'] ?? [], // Array of descriptions
-            'company_description' => $foundItem['deskripsi perusahaan'] ?? [], // Array
-            'requirements' => $foundItem['kualifikasi'] ?? [], // Array
-            'documents' => $foundItem['persyaratan'] ?? [], // Array
-            'apply' => $foundItem['apply'] ?? [], // Array
-            'url' => $foundItem['url'][0] ?? '#',
-            'posted_at' => $foundItem['created_at'][0] ?? now(),
-            'updated_at' => $foundItem['updated_at'][0] ?? now(),
-        ];
+        return DB::table('loker')
+            ->whereNull('deleted_at')
+            ->where('actived', 1)
+            ->where('slug', $slug)
+            ->first();
     }
 
     public function render()
