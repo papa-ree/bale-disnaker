@@ -44,9 +44,9 @@
                             </div>
 
                             {{-- Action Buttons for Mobile --}}
-                            @if ($job->apply)
+                            @if (!empty($job->url_perusahaan))
                                 <div class="flex md:hidden flex-col gap-3">
-                                    <a href="{{ $job->apply }}" target="_blank"
+                                    <a href="{{ str_starts_with($job->url_perusahaan, 'http') ? $job->url_perusahaan : 'https://' . $job->url_perusahaan }}" target="_blank"
                                         class="w-full py-3 bg-teal-600 text-white text-center rounded-xl font-semibold">
                                         Lamar Sekarang
                                     </a>
@@ -169,10 +169,18 @@
                             </div>
                         </div>
 
-                        {{-- Apply Button --}}
+                        {{-- Cara Melamar --}}
                         @if (!empty($job->apply))
+                            <div class="border-t border-gray-100 dark:border-slate-700 my-6 pt-6">
+                                <h4 class="font-bold text-gray-900 dark:text-white mb-4">Cara Melamar</h4>
+                                <div class="text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-slate-900/50 p-4 rounded-xl leading-relaxed whitespace-pre-wrap">{{ $job->apply }}</div>
+                            </div>
+                        @endif
+
+                        {{-- Apply Button --}}
+                        @if (!empty($job->url_perusahaan))
                             <div class="mt-6">
-                                <a href="{{ $job->apply }}" target="_blank"
+                                <a href="{{ str_starts_with($job->url_perusahaan, 'http') ? $job->url_perusahaan : 'https://' . $job->url_perusahaan }}" target="_blank"
                                     class="w-full block py-3 bg-teal-600 hover:bg-teal-700 text-white text-center rounded-xl font-semibold transition-colors shadow-lg shadow-teal-600/20">
                                     Lamar Sekarang
                                 </a>
@@ -188,10 +196,14 @@
                                 </p>
                             @endif
                             @if (!empty($job->url_perusahaan))
-                                <a href="{{ $job->url_perusahaan }}" target="_blank"
+                                @php
+                                    $domain = parse_url((str_starts_with($job->url_perusahaan, 'http') ? '' : 'http://') . $job->url_perusahaan, PHP_URL_HOST);
+                                    $domain = preg_replace('/^www\./', '', $domain);
+                                @endphp
+                                <a href="{{ str_starts_with($job->url_perusahaan, 'http') ? $job->url_perusahaan : 'https://' . $job->url_perusahaan }}" target="_blank"
                                     class="inline-flex items-center gap-1.5 mt-3 text-sm text-teal-600 dark:text-teal-400 hover:underline">
                                     <x-lucide-external-link class="w-4 h-4" />
-                                    Kunjungi Website
+                                    {{ $domain }}
                                 </a>
                             @endif
                         </div>
