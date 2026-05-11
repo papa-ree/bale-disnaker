@@ -18,7 +18,8 @@
                         class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-slate-700">
                         <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
                             <div>
-                                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ $job->nama_pekerjaan }}</h1>
+                                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ $job->nama_pekerjaan }}
+                                </h1>
                                 <div class="text-xl text-teal-600 dark:text-teal-400 font-medium mb-4">
                                     {{ $job->nama_perusahaan }}
                                 </div>
@@ -46,7 +47,8 @@
                             {{-- Action Buttons for Mobile --}}
                             @if (!empty($job->url_perusahaan))
                                 <div class="flex md:hidden flex-col gap-3">
-                                    <a href="{{ str_starts_with($job->url_perusahaan, 'http') ? $job->url_perusahaan : 'https://' . $job->url_perusahaan }}" target="_blank"
+                                    <a href="{{ str_starts_with($job->url_perusahaan, 'http') ? $job->url_perusahaan : 'https://' . $job->url_perusahaan }}"
+                                        target="_blank"
                                         class="w-full py-3 bg-teal-600 text-white text-center rounded-xl font-semibold">
                                         Lamar Sekarang
                                     </a>
@@ -75,7 +77,7 @@
                                 $editorData = is_string($job->persyaratan_kualifikasi)
                                     ? json_decode($job->persyaratan_kualifikasi, true)
                                     : $job->persyaratan_kualifikasi;
-                                $hasBlocks  = !empty($editorData['blocks'] ?? []);
+                                $hasBlocks = !empty($editorData['blocks'] ?? []);
                             @endphp
                             @if ($hasBlocks)
                                 <x-emperan::editorjs-renderer :content="$job->persyaratan_kualifikasi" />
@@ -119,7 +121,8 @@
                                     </div>
                                     <div>
                                         <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Kategori</div>
-                                        <div class="font-semibold text-gray-900 dark:text-white capitalize">{{ $job->kategory }}</div>
+                                        <div class="font-semibold text-gray-900 dark:text-white capitalize">{{ $job->kategory }}
+                                        </div>
                                     </div>
                                 </div>
                             @endif
@@ -133,7 +136,8 @@
                                     </div>
                                     <div>
                                         <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Tipe</div>
-                                        <div class="font-semibold text-gray-900 dark:text-white capitalize">{{ $job->tipe }}</div>
+                                        <div class="font-semibold text-gray-900 dark:text-white capitalize">{{ $job->tipe }}
+                                        </div>
                                     </div>
                                 </div>
                             @endif
@@ -173,14 +177,18 @@
                         @if (!empty($job->apply))
                             <div class="border-t border-gray-100 dark:border-slate-700 my-6 pt-6">
                                 <h4 class="font-bold text-gray-900 dark:text-white mb-4">Cara Melamar</h4>
-                                <div class="text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-slate-900/50 p-4 rounded-xl leading-relaxed whitespace-pre-wrap">{{ $job->apply }}</div>
+                                <div
+                                    class="text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-slate-900/50 p-4 rounded-xl leading-relaxed whitespace-pre-wrap">
+                                    {{ $job->apply }}
+                                </div>
                             </div>
                         @endif
 
                         {{-- Apply Button --}}
                         @if (!empty($job->url_perusahaan))
                             <div class="mt-6">
-                                <a href="{{ str_starts_with($job->url_perusahaan, 'http') ? $job->url_perusahaan : 'https://' . $job->url_perusahaan }}" target="_blank"
+                                <a href="{{ str_starts_with($job->url_perusahaan, 'http') ? $job->url_perusahaan : 'https://' . $job->url_perusahaan }}"
+                                    target="_blank"
                                     class="w-full block py-3 bg-teal-600 hover:bg-teal-700 text-white text-center rounded-xl font-semibold transition-colors shadow-lg shadow-teal-600/20">
                                     Lamar Sekarang
                                 </a>
@@ -189,7 +197,8 @@
 
                         {{-- Company Info --}}
                         <div class="mt-8 pt-6 border-t border-gray-100 dark:border-slate-700">
-                            <h4 class="font-bold text-gray-900 dark:text-white mb-2">Tentang {{ $job->nama_perusahaan }}</h4>
+                            <h4 class="font-bold text-gray-900 dark:text-white mb-2">Tentang {{ $job->nama_perusahaan }}
+                            </h4>
                             @if (!empty($job->deskripsi_perusahaan))
                                 <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                                     {{ $job->deskripsi_perusahaan }}
@@ -200,10 +209,10 @@
                                     $domain = parse_url((str_starts_with($job->url_perusahaan, 'http') ? '' : 'http://') . $job->url_perusahaan, PHP_URL_HOST);
                                     $domain = preg_replace('/^www\./', '', $domain);
                                 @endphp
-                                <a href="{{ str_starts_with($job->url_perusahaan, 'http') ? $job->url_perusahaan : 'https://' . $job->url_perusahaan }}" target="_blank"
+                                <a href="{{ 'https://' . $domain }}" target="_blank"
                                     class="inline-flex items-center gap-1.5 mt-3 text-sm text-teal-600 dark:text-teal-400 hover:underline">
                                     <x-lucide-external-link class="w-4 h-4" />
-                                    {{ $domain }}
+                                    Kunjungi {{ $job->nama_perusahaan }}
                                 </a>
                             @endif
                         </div>
@@ -213,11 +222,13 @@
         @else
             {{-- Not Found --}}
             <div class="max-w-6xl mx-auto text-center py-24">
-                <div class="w-24 h-24 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div
+                    class="w-24 h-24 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
                     <x-lucide-search class="text-gray-400 w-10 h-10" />
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Lowongan Tidak Ditemukan</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-6">Lowongan yang Anda cari tidak tersedia atau sudah ditutup.</p>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Lowongan yang Anda cari tidak tersedia atau sudah ditutup.
+                </p>
                 <a href="{{ route('bale.jobs') }}" wire:navigate
                     class="inline-flex px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-semibold transition-colors">
                     Lihat Lowongan Lain
