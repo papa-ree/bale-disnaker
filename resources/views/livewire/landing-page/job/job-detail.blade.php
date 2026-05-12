@@ -178,9 +178,16 @@
                             <div class="border-t border-gray-100 dark:border-slate-700 my-6 pt-6">
                                 <h4 class="font-bold text-gray-900 dark:text-white mb-4">Cara Melamar</h4>
                                 <div
-                                    class="text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-slate-900/50 p-4 rounded-xl leading-relaxed whitespace-pre-wrap">
-                                    {{ $job->apply }}
-                                </div>
+                                    class="text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-slate-900/50 p-4 rounded-xl leading-relaxed whitespace-pre-wrap wrap-break-word">
+                                    @php
+                                        $applyText = e(trim($job->apply));
+                                        $applyText = preg_replace_callback(
+                                            '/(https?:\/\/[^\s]+|bit\.ly\/[^\s]+|www\.[^\s]+)/i',
+                                            fn($m) => '<a href="' . (str_starts_with(strtolower($m[0]), 'http') ? $m[0] : 'https://' . $m[0]) . '" target="_blank" class="underline decoration-wavy decoration-teal-500 hover:text-teal-600 transition-colors">' . $m[0] . '</a>',
+                                            $applyText
+                                        );
+                                    @endphp
+                                    {!! $applyText !!}</div>
                             </div>
                         @endif
 
