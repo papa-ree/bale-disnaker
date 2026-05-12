@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Computed;
 use Bale\Emperan\Models\Section;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 class JobSearchWidget extends Component
 {
@@ -77,9 +78,23 @@ class JobSearchWidget extends Component
             ->toArray();
     }
 
+    /**
+     * Ambil 5 lowongan terbaru.
+     */
+    #[Computed]
+    public function latestJobs()
+    {
+        return DB::table('loker')
+            ->whereNull('deleted_at')
+            ->where('actived', 1)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+    }
+
     public function search()
     {
-        return $this->redirectRoute('bale.jobs', ['search' => $this->keyword ?: 'all'], navigate: true);
+        return $this->redirectRoute('bale.jobs', ['search' => $this->keyword ?: ''], navigate: true);
     }
 
     public function searchCategory($category)

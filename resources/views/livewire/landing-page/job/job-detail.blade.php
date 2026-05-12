@@ -44,16 +44,20 @@
                                 </div>
                             </div>
 
-                            {{-- Action Buttons for Mobile --}}
-                            @if (!empty($job->url_perusahaan))
-                                <div class="flex md:hidden flex-col gap-3">
+                            {{-- Action Buttons: Mobile --}}
+                            <div class="flex md:hidden flex-col gap-3">
+                                @if (!empty($job->url_perusahaan))
                                     <a href="{{ str_starts_with($job->url_perusahaan, 'http') ? $job->url_perusahaan : 'https://' . $job->url_perusahaan }}"
                                         target="_blank"
                                         class="w-full py-3 bg-teal-600 text-white text-center rounded-xl font-semibold">
                                         Lamar Sekarang
                                     </a>
+                                @endif
+                                <div class="mt-2 flex justify-end">
+                                    <x-emperan::share-button :url="route('bale.view-job', $job->slug)"
+                                        :title="$job->nama_pekerjaan" :text="$job->nama_perusahaan" />
                                 </div>
-                            @endif
+                            </div>
                         </div>
                     </div>
 
@@ -177,16 +181,16 @@
                         @if (!empty($job->apply))
                             <div class="border-t border-gray-100 dark:border-slate-700 my-6 pt-6">
                                 <h4 class="font-bold text-gray-900 dark:text-white mb-4">Cara Melamar</h4>
+                                @php
+                                    $applyText = e(trim($job->apply));
+                                    $applyText = preg_replace_callback(
+                                        '/(https?:\/\/[^\s]+|bit\.ly\/[^\s]+|www\.[^\s]+)/i',
+                                        fn($m) => '<a href="' . (str_starts_with(strtolower($m[0]), 'http') ? $m[0] : 'https://' . $m[0]) . '" target="_blank" class="underline decoration-wavy decoration-teal-500 hover:text-teal-600 transition-colors">' . $m[0] . '</a>',
+                                        $applyText
+                                    );
+                                @endphp
                                 <div
-                                    class="text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-slate-900/50 p-4 rounded-xl leading-relaxed whitespace-pre-wrap wrap-break-word">
-                                    @php
-                                        $applyText = e(trim($job->apply));
-                                        $applyText = preg_replace_callback(
-                                            '/(https?:\/\/[^\s]+|bit\.ly\/[^\s]+|www\.[^\s]+)/i',
-                                            fn($m) => '<a href="' . (str_starts_with(strtolower($m[0]), 'http') ? $m[0] : 'https://' . $m[0]) . '" target="_blank" class="underline decoration-wavy decoration-teal-500 hover:text-teal-600 transition-colors">' . $m[0] . '</a>',
-                                            $applyText
-                                        );
-                                    @endphp
+                                    class="text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-slate-900/50 p-4 rounded-xl leading-relaxed">
                                     {!! $applyText !!}
                                 </div>
                             </div>
@@ -202,6 +206,12 @@
                                 </a>
                             </div>
                         @endif
+
+                        {{-- Share Button (Desktop Sidebar) --}}
+                        <div class="mt-3 flex justify-end">
+                            <x-emperan::share-button :url="route('bale.view-job', $job->slug)" :title="$job->nama_pekerjaan"
+                                :text="$job->nama_perusahaan" />
+                        </div>
 
                         {{-- Company Info --}}
                         <div class="mt-8 pt-6 border-t border-gray-100 dark:border-slate-700">

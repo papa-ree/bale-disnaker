@@ -4,10 +4,8 @@
             <div class="container mx-auto px-4">
                 <div class="max-w-4xl mx-auto">
                     @if (empty($section) || empty($this->meta))
-                        <x-emperan::section-error
-                            title="Widget Pencarian Lowongan Belum Dikonfigurasi"
-                            message="Silakan konfigurasi section 'job-widget-section' di panel admin CMS agar fungsionalitas pencarian kerja dapat ditampilkan."
-                        />
+                        <x-emperan::section-error title="Widget Pencarian Lowongan Belum Dikonfigurasi"
+                            message="Silakan konfigurasi section 'job-widget-section' di panel admin CMS agar fungsionalitas pencarian kerja dapat ditampilkan." />
                     @else
                         @php
                             $meta = $this->meta;
@@ -46,15 +44,29 @@
                                         class="w-full pl-12 h-14 text-base bg-gray-50 dark:bg-slate-900/50 border-gray-200 dark:border-slate-700 rounded-md dark:text-gray-400 focus:border-teal-500 focus:ring-teal-500" />
                                 </div>
 
-                                <button type="submit"
-                                    class="h-14 px-8 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-base rounded-lg transition-colors">
-                                    {{ $meta['buttons'][0]['label'] ?? 'Cari Lowongan' }}
+                                <button type="submit" wire:loading.attr="disabled"
+                                    class="h-14 px-8 cursor-pointer bg-teal-600 hover:bg-teal-700 disabled:bg-teal-800 text-white font-semibold text-base rounded-lg transition-all flex items-center justify-center gap-2">
+                                    <span wire:loading.remove wire:target="search">
+                                        {{ $meta['buttons'][0]['label'] ?? 'Cari Lowongan' }}
+                                    </span>
+                                    <span wire:loading wire:target="search">
+                                        Memuat...
+                                    </span>
+                                    <svg wire:loading wire:target="search" class="animate-spin h-5 w-5"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
                                 </button>
                             </div>
 
                             @if (!empty($categories))
                                 <div class="mt-6 flex flex-wrap gap-2 text-center md:text-left justify-center md:justify-start">
-                                    <span class="text-sm text-gray-600 dark:text-gray-400 w-full md:w-auto mb-2 md:mb-0">Pencarian populer:</span>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400 w-full md:w-auto mb-2 md:mb-0">Pencarian
+                                        populer:</span>
                                     @foreach ($categories as $cat)
                                         <button type="button" wire:click="searchCategory('{{ $cat }}')"
                                             class="px-3 py-1 bg-gray-100 dark:bg-slate-700 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-700 dark:hover:text-teal-400 text-gray-700 dark:text-gray-300 rounded-full text-sm transition-colors">
@@ -84,6 +96,58 @@
                                         <div class="text-sm text-gray-600 dark:text-gray-400">{{ $stat['label'] }}</div>
                                     </div>
                                 @endforeach
+                            </div>
+                        @endif
+
+                        {{-- Latest Jobs --}}
+                        @if (!empty($this->latestJobs) && $this->latestJobs->count() > 0)
+                            <div class="mt-10">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Lowongan Terbaru</h3>
+                                    <a href="{{ route('bale.jobs') }}" wire:navigate.hover
+                                        class="text-sm text-teal-600 dark:text-teal-400 hover:underline font-medium inline-flex items-center gap-1">
+                                        Lihat Semua
+                                        <x-lucide-arrow-right class="w-3.5 h-3.5" />
+                                    </a>
+                                </div>
+                                <div class="space-y-3">
+                                    @foreach ($this->latestJobs as $latestJob)
+                                        <a href="{{ route('bale.view-job', $latestJob->slug) }}" wire:navigate.hover
+                                            class="group flex items-center justify-between bg-white dark:bg-slate-800 rounded-xl px-5 py-4 border border-gray-100 dark:border-slate-700 hover:border-teal-400 dark:hover:border-teal-500 hover:shadow-md transition-all duration-200">
+                                            <div class="flex items-center gap-4 min-w-0">
+                                                {{-- Icon placeholder --}}
+                                                <div class="w-10 h-10 rounded-lg bg-teal-50 dark:bg-teal-900/20 flex items-center justify-center shrink-0">
+                                                    <x-lucide-briefcase class="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                                                </div>
+                                                <div class="min-w-0">
+                                                    <p class="font-semibold text-gray-900 dark:text-white text-sm truncate group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors">
+                                                        {{ $latestJob->nama_pekerjaan }}
+                                                    </p>
+                                                    <div class="flex items-center gap-3 mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                                                        <span class="truncate">{{ $latestJob->nama_perusahaan }}</span>
+                                                        @if ($latestJob->lokasi)
+                                                            <span class="flex items-center gap-1 shrink-0">
+                                                                <x-lucide-map-pin class="w-3 h-3" />
+                                                                {{ $latestJob->lokasi }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center gap-3 shrink-0 ml-4">
+                                                @if ($latestJob->tipe)
+                                                    <span class="hidden sm:inline-flex px-2.5 py-1 bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400 rounded-full text-xs font-medium capitalize">
+                                                        {{ $latestJob->tipe }}
+                                                    </span>
+                                                @endif
+                                                <span class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">
+                                                    {{ \Carbon\Carbon::parse($latestJob->created_at)->diffForHumans() }}
+                                                </span>
+                                                <x-lucide-chevron-right class="w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-teal-500 transition-colors" />
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
                             </div>
                         @endif
                     @endif
