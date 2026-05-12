@@ -187,7 +187,8 @@
                                             $applyText
                                         );
                                     @endphp
-                                    {!! $applyText !!}</div>
+                                    {!! $applyText !!}
+                                </div>
                             </div>
                         @endif
 
@@ -211,17 +212,18 @@
                                     {{ $job->deskripsi_perusahaan }}
                                 </p>
                             @endif
-                            @if (!empty($job->url_perusahaan))
-                                @php
-                                    $domain = parse_url((str_starts_with($job->url_perusahaan, 'http') ? '' : 'http://') . $job->url_perusahaan, PHP_URL_HOST);
-                                    $domain = preg_replace('/^www\./', '', $domain);
-                                @endphp
-                                <a href="{{ 'https://' . $domain }}" target="_blank"
-                                    class="inline-flex items-center gap-1.5 mt-3 text-sm text-teal-600 dark:text-teal-400 hover:underline">
-                                    <x-lucide-external-link class="w-4 h-4" />
-                                    Kunjungi {{ $job->nama_perusahaan }}
-                                </a>
-                            @endif
+                            {{-- @if (!empty($job->url_perusahaan))
+                            @php
+                            $domain = parse_url((str_starts_with($job->url_perusahaan, 'http') ? '' : 'http://') .
+                            $job->url_perusahaan, PHP_URL_HOST);
+                            $domain = preg_replace('/^www\./', '', $domain);
+                            @endphp
+                            <a href="{{ 'https://' . $domain }}" target="_blank"
+                                class="inline-flex items-center gap-1.5 mt-3 text-sm text-teal-600 dark:text-teal-400 hover:underline">
+                                <x-lucide-external-link class="w-4 h-4" />
+                                Kunjungi {{ $job->nama_perusahaan }}
+                            </a>
+                            @endif --}}
                         </div>
                     </div>
                 </div>
