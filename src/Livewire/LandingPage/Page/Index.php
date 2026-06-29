@@ -2,32 +2,39 @@
 
 namespace Paparee\BaleDisnaker\Livewire\LandingPage\Page;
 
-use Bale\Emperan\Models\Page;
-use Livewire\Component;
-use Livewire\Attributes\{Layout};
+use Bale\Umpak\DTOs\PageData;
+use Bale\Umpak\Livewire\UmpakComponent;
+use Livewire\Attributes\{Computed, Layout};
 
 #[Layout('bale-disnaker::layouts.app')]
-class Index extends Component
+class Index extends UmpakComponent
 {
-    public $page;
+    public string $pageSlug;
 
-    public function mount(string $page)
+    public function mount(string $page): void
     {
-        $this->page = Page::whereSlug($page)->first();
+        $this->pageSlug = $page;
+    }
 
-        // Jika halaman tidak ditemukan, redirect atau tampilkan 404
-        if (!$this->page) {
+    #[Computed]
+    public function pageData(): ?PageData
+    {
+        $found = $this->page($this->pageSlug);
+
+        if (!$found) {
             abort(404, 'Halaman tidak ditemukan');
         }
+
+        return $found;
     }
 
     public function render()
     {
         return view('bale-disnaker::livewire.landing-page.page.index', [
-            'page' => $this->page
+            'page' => $this->pageData,
         ])->layout('bale-disnaker::layouts.app', [
-            'title' => $this->page->title,
-            'seoModel' => $this->page,
+            'title'    => $this->pageData?->title,
+            'seoModel' => $this->pageData?->seo,
         ]);
     }
 }

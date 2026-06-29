@@ -1,19 +1,22 @@
-@if (empty($section) || empty($this->meta))
+@php
+    $section = $this->sectionData;
+@endphp
+
+@if (!$section || empty($section->meta('title')))
     {{-- Error Handler: Section Not Found --}}
-    <x-emperan::section-error title="Konten Hero Tidak Ditemukan"
+    <x-umpak::section-error title="Konten Hero Tidak Ditemukan"
         message="Silakan konfigurasi section 'hero-section' di panel admin CMS agar konten halaman utama dapat ditampilkan." />
 @else
     @php
-        $meta = $this->meta;
-        $background = $meta['background'] ?? null;
-        $images = $background['images'] ?? [];
-        $organization = $meta['custom']['organization_name'] ?? null;
-        $buttons = array_values(array_filter($meta['buttons'] ?? [], fn($b) => $b['show'] ?? true));
-        $stats = $this->stats;
+        $background = $section->meta('background');
+        $images     = $background['images'] ?? [];
+        $organization = $section->meta('custom.organization_name');
+        $buttons    = $section->buttons();
+        $stats      = $this->stats;
 
         // Primary background image (first in array)
         $bgImage = $images[0]['cdn_url'] ?? ($images[0]['path'] ?? null);
-        $altText = $meta['title'] ?? 'Tenaga kerja profesional';
+        $altText = $section->meta('title', 'Tenaga kerja profesional');
     @endphp
 
     <section class="relative min-h-screen flex items-center overflow-hidden">
@@ -45,16 +48,16 @@
                 @endif
 
                 {{-- TITLE --}}
-                @if (!empty($meta['title']))
+                @if ($section->meta('title'))
                     <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                        {!! nl2br(e($meta['title'])) !!}
+                        {!! nl2br(e($section->meta('title'))) !!}
                     </h1>
                 @endif
 
                 {{-- SUBTITLE --}}
-                @if (!empty($meta['subtitle']))
+                @if ($section->meta('subtitle'))
                     <p class="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed">
-                        {!! nl2br(e($meta['subtitle'])) !!}
+                        {!! nl2br(e($section->meta('subtitle'))) !!}
                     </p>
                 @endif
 

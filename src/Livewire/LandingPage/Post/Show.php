@@ -2,41 +2,44 @@
 
 namespace Paparee\BaleDisnaker\Livewire\LandingPage\Post;
 
-use Livewire\Component;
-use Livewire\Attributes\{Layout, Computed};
-use Bale\Emperan\Models\Post;
+use Bale\Umpak\DTOs\PostData;
+use Bale\Umpak\Livewire\UmpakComponent;
+use Livewire\Attributes\{Computed, Layout};
 
 #[Layout('bale-disnaker::layouts.app')]
-class Show extends Component
+class Show extends UmpakComponent
 {
-    public $post;
+    public string $postSlug;
 
-    public function mount(string $post)
+    public function mount(string $post): void
     {
-        $this->post = Post::whereSlug($post)
-            ->wherePublished(true)
-            ->first();
+        $this->postSlug = $post;
+    }
 
-        if (!$this->post) {
+    #[Computed]
+    public function postData(): ?PostData
+    {
+        $found = $this->post($this->postSlug);
+
+        if (!$found) {
             abort(404, 'Berita tidak ditemukan');
         }
+
+        return $found;
     }
 
     #[Computed]
     public function suggestedPosts()
     {
-        return Post::wherePublished(true)
-            ->where('id', '!=', $this->post->id)
-            ->latest()
-            ->take(5)
-            ->get();
+        return $this->getRandomPosts(5);
     }
 
     public function render()
     {
-        return view('bale-disnaker::livewire.landing-page.post.show')->layout('bale-disnaker::layouts.app', [
-            'title' => $this->post->title,
-            'seoModel' => $this->post,
-        ]);
+        return view('bale-disnaker::livewire.landing-page.post.show')
+            ->layout('bale-disnaker::layouts.app', [
+                'title'    => $this->postData?->title,
+                'seoModel' => $this->postData?->seo,
+            ]);
     }
 }

@@ -2,50 +2,40 @@
 
 namespace Paparee\BaleDisnaker\Livewire\LandingPage\Home;
 
-use Livewire\Component;
+use Bale\Umpak\DTOs\SectionData;
+use Bale\Umpak\Livewire\UmpakComponent;
 use Livewire\Attributes\Computed;
-use Bale\Emperan\Models\Section;
-use Bale\Emperan\Models\Post;
 
-class LatestNews extends Component
+class LatestNews extends UmpakComponent
 {
     public string $slug = 'post-section';
-    public array $section = [];
-    public $actived;
 
-    public function mount(?string $slug = null)
+    public function mount(?string $slug = null): void
     {
         if ($slug) {
             $this->slug = $slug;
         }
-
-        $sectionModel = Section::whereSlug($this->slug)->first();
-
-        $this->section = $sectionModel?->content ?? [];
-        $this->actived = $sectionModel?->actived ?? false;
     }
 
     #[Computed]
-    public function meta()
+    public function sectionData(): ?SectionData
     {
-        return $this->section['meta'] ?? [];
+        return $this->section($this->slug);
     }
 
     #[Computed]
-    public function availablePosts()
+    public function posts()
     {
-        $limit = $this->meta['grid'] ?? 3;
+        $limit = (int) ($this->sectionData?->meta('grid', 3) ?? 3);
+        $limit = $limit > 0 ? $limit : 3;
 
-        // Ensure limit is numeric and > 0
-        $limit = is_numeric($limit) && $limit > 0 ? (int) $limit : 3;
-
-        return Post::latest()->wherePublished(true)->take($limit)->get();
+        return $this->latestPosts($limit);
     }
 
     public function render()
     {
         return view('bale-disnaker::livewire.landing-page.home.latest-news', [
-            'posts' => $this->availablePosts
+            'posts' => $this->posts,
         ]);
     }
 }

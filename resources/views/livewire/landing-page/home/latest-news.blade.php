@@ -1,19 +1,22 @@
 <div>
-    @if ($actived)
+    @php
+        $section = $this->sectionData;
+    @endphp
+
+    @if ($section && $section->actived)
         <section class="py-20 bg-linear-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800">
             <div data-aos="fade-up">
                 <div class="container max-w-7xl mx-auto px-4">
-                    @if (empty($section) || empty($this->meta))
+                    @if (!$section)
                         {{-- Error Handler: Section Not Found --}}
-                        <x-emperan::section-error title="Konten Berita Tidak Ditemukan"
+                        <x-umpak::section-error title="Konten Berita Tidak Ditemukan"
                             message="Silakan konfigurasi section 'post-section' di panel admin CMS agar berita terbaru dapat ditampilkan." />
                     @else
                         @php
-                            $meta = $this->meta;
-                            $title = $meta['title'] ?? 'Berita Terbaru';
-                            $subtitle = $meta['subtitle'] ?? null;
-                            $buttonLabel = $meta['button']['label'] ?? 'Lihat Semua Berita';
-                            $buttonUrl = $meta['button']['url'] ?? route('bale.post-list');
+                            $title       = $section->meta('title', 'Berita Terbaru');
+                            $subtitle    = $section->meta('subtitle');
+                            $buttonLabel = $section->meta('button.label', 'Lihat Semua Berita');
+                            $buttonUrl   = $section->meta('button.url', route('bale.post-list'));
                             if ($buttonUrl === '#') {
                                 $buttonUrl = route('bale.post-list');
                             }
@@ -39,8 +42,8 @@
                                     <a href="{{ route('bale.view-post', $post->slug) }}" class="block">
                                         {{-- Image --}}
                                         <div class="relative h-56 overflow-hidden">
-                                            @if ($post->thumbnail)
-                                                <img src="{{ cdn_asset('thumbnails/' . $post->thumbnail) }}" alt="{{ $post->title }}"
+                                            @if ($post->hasThumbnail())
+                                                <img src="{{ $post->thumbnail }}" alt="{{ $post->title }}"
                                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                                     loading="lazy" />
                                             @else
@@ -54,10 +57,10 @@
                                                     </svg>
                                                 </div>
                                             @endif
-                                            @if ($post?->category?->name)
+                                            @if ($post->categorySlug)
                                                 <div class="absolute top-4 left-4">
                                                     <span class="px-3 py-1 bg-teal-600 text-white text-xs font-semibold rounded-full">
-                                                        {{ $post->category->name }}
+                                                        {{ $post->categorySlug }}
                                                     </span>
                                                 </div>
                                             @endif
@@ -65,8 +68,8 @@
                                         {{-- Content --}}
                                         <div class="p-6">
                                             <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
-                                                <x-lucide-calendar class="w-4 h-4" />
-                                                <span>{{ $post->created_at }}</span>
+                                                <x-umpak::icon name="calendar" class="w-4 h-4" />
+                                                <span>{{ $post->formattedDate() }}</span>
                                             </div>
 
                                             <h3
@@ -74,7 +77,7 @@
                                                 {{ $post->title }}
                                             </h3>
                                             <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                                                {{ $post->getExcerpt(120) }}
+                                                {{ $post->excerpt }}
                                             </p>
 
                                             <span

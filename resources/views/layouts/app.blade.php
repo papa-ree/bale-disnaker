@@ -5,10 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <x-seo::seo-meta :model="$seoModel ?? null" :defaults="[
+    {{-- SEO --}}
+    <x-seo::seo-meta :model="$seoModel ?? $post ?? $page ?? null" :defaults="[
         'title' => $title ?? 'Dinas Tenaga Kerja Kabupaten Ponorogo',
-        'image' => cdn_asset('shared/logo-png.png')
+        'image' => cdn_asset('shared/og-default.png')
     ]" />
+
     <link rel="icon" type="image/x-icon" href="{{ cdn_asset('shared/favicon.ico') }}"
         referrerpolicy="{{ app()->isLocal() ? 'no-referrer' : 'strict-origin-when-cross-origin' }}">
 
@@ -21,7 +23,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 
-    <x-emperan::balystics-tag />
+    <x-umpak::analytics />
 
     <script>
         const html = document.querySelector( 'html' );
@@ -37,7 +39,7 @@
 <body
     class="min-h-screen bg-gray-100 dark:bg-slate-900 scrollbar-thin scrollbar-thumb-teal-600 scrollbar-track-gray-100/50 scrollbar-thumb-rounded-full scrollbar-track-rounded-full overscroll-none">
 
-    <livewire:bale-disnaker.shared-components.topbar />
+    <x-bale-disnaker::navbar />
 
     <main class="pt-16 md:pt-20"> {{-- Added padding-top to account for fixed header --}}
         {{ $slot }}
@@ -45,7 +47,7 @@
 
     <livewire:bale-disnaker.landing-page.footer.index slug="footer-section" />
 
-    <livewire:emperan.shared-components.floating-contact />
+    <livewire:umpak.shared-components.floating-contact />
 
     @livewireScripts
 

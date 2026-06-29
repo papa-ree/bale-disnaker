@@ -2,42 +2,35 @@
 
 namespace Paparee\BaleDisnaker\Livewire\LandingPage\Home;
 
-use Livewire\Component;
-use Livewire\Attributes\Computed;
-use Bale\Emperan\Models\Section;
+use Bale\Umpak\DTOs\SectionData;
+use Bale\Umpak\Livewire\UmpakComponent;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
+use Livewire\Attributes\Computed;
 
-class JobSearchWidget extends Component
+class JobSearchWidget extends UmpakComponent
 {
     public string $slug = 'job-widget-section';
-    public $keyword = '';
-    public array $section = [];
-    public $actived;
+    public string $keyword = '';
 
-    public function mount(?string $slug = null)
+    public function mount(?string $slug = null): void
     {
         if ($slug) {
             $this->slug = $slug;
         }
-
-        $data = Section::whereSlug($this->slug)->first();
-
-        $this->section = $data ? $data->content : [];
-        $this->actived = $data ? $data->actived : false;
     }
 
     #[Computed]
-    public function meta()
+    public function sectionData(): ?SectionData
     {
-        return $this->section['meta'] ?? [];
+        return $this->section($this->slug);
     }
 
     /**
-     * Ambil statistik dinamis dari database.
+     * Ambil statistik dinamis dari database loker.
+     * Tabel loker bukan domain umpak, jadi DB::table() tetap digunakan.
      */
     #[Computed]
-    public function stats()
+    public function stats(): array
     {
         return [
             [
@@ -60,11 +53,10 @@ class JobSearchWidget extends Component
     }
 
     /**
-     * Fetch categories for popular searches. 
-     * Usually extracted from job-vacancies-section or similar.
+     * Ambil kategori populer dari tabel loker.
      */
     #[Computed]
-    public function categories()
+    public function categories(): array
     {
         return DB::table('loker')
             ->whereNull('deleted_at')
@@ -92,14 +84,14 @@ class JobSearchWidget extends Component
             ->get();
     }
 
-    public function search()
+    public function search(): void
     {
-        return $this->redirectRoute('bale.jobs', ['search' => $this->keyword ?: ''], navigate: true);
+        $this->redirectRoute('bale.jobs', ['search' => $this->keyword ?: ''], navigate: true);
     }
 
-    public function searchCategory($category)
+    public function searchCategory(string $category): void
     {
-        return $this->redirectRoute('bale.jobs', ['category' => $category], navigate: true);
+        $this->redirectRoute('bale.jobs', ['category' => $category], navigate: true);
     }
 
     public function render()

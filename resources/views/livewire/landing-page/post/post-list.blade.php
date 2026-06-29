@@ -1,11 +1,12 @@
 <div class="min-h-screen bg-gray-50 dark:bg-slate-900">
 
     {{-- header --}}
-    <x-bale-disnaker::header-page 
-        :title="$section['content']['meta']['title'] ?? 'Berita & Pengumuman'"
-        :subtitle="$section['content']['meta']['subtitle'] ?? 'Tetap terinformasi dengan pembaruan terbaru dari Disnaker Ponorogo'"
-        :background="$section['content']['meta']['background'] ?? null"
-        :breadcrumbs="[['label' => $section['content']['meta']['title'] ?? 'Berita & Pengumuman']]"
+    @php $headerSection = $this->sectionData; @endphp
+    <x-bale-disnaker::header-page
+        :title="$headerSection?->meta('title', 'Berita & Pengumuman')"
+        :subtitle="$headerSection?->meta('subtitle', 'Tetap terinformasi dengan pembaruan terbaru dari Disnaker Ponorogo')"
+        :background="$headerSection?->meta('background')"
+        :breadcrumbs="[['label' => $headerSection?->meta('title', 'Berita & Pengumuman')]]"
     />
 
     {{-- Search Form --}}
@@ -118,10 +119,9 @@
                     <article wire:key='{{ $post->id }}'
                         class="group bg-white dark:bg-slate-800 rounded-xl md:rounded-2xl overflow-hidden shadow-sm md:shadow-md hover:shadow-md md:hover:shadow-2xl hover:border-teal-600 transition-all duration-300 border border-gray-100 dark:border-slate-700">
                         <a href="{{ route('bale.view-post', $post->slug) }}" wire:navigate.hover class="flex md:block gap-4 p-3 md:p-0">
-                            {{-- Image --}}
-                            <div class="relative h-24 w-24 md:h-56 md:w-full shrink-0 rounded-lg md:rounded-none overflow-hidden">
-                                @if ($post->thumbnail)
-                                    <img src="{{ cdn_asset('thumbnails/' . $post->thumbnail) }}" alt="{{ $post->title }}"
+                        <div class="relative h-24 w-24 md:h-56 md:w-full shrink-0 rounded-lg md:rounded-none overflow-hidden">
+                                @if ($post->hasThumbnail())
+                                    <img src="{{ $post->thumbnail }}" alt="{{ $post->title }}"
                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
                                 @else
                                     <div class="w-full h-full group-hover:scale-150 transition-transform duration-500 bg-gray-100 dark:bg-slate-700 flex items-center justify-center">
@@ -131,10 +131,10 @@
                                     </div>
                                 @endif
                                 
-                                @if($post?->category?->name)
+                                @if($post->categorySlug)
                                     <div class="absolute top-4 left-4 hidden md:block">
                                         <span class="px-3 py-1 bg-teal-600 text-white text-xs font-semibold rounded-full">
-                                            {{ $post->category->name }}
+                                            {{ $post->categorySlug }}
                                         </span>
                                     </div>
                                 @endif
@@ -144,7 +144,7 @@
                             <div class="p-0 md:p-6 flex-1 flex flex-col justify-center">
                                 <div class="flex items-center gap-2 text-[10px] md:text-sm font-bold md:font-normal text-teal-600/60 md:text-gray-500 dark:text-teal-400 md:dark:text-gray-400 mb-1 md:mb-3 uppercase tracking-wider md:normal-case md:tracking-normal">
                                     <x-lucide-calendar class="w-4 h-4 hidden md:block" />
-                                    <span>{{ $post->created_at }}</span>
+                                    <span>{{ $post->formattedDate() }}</span>
                                 </div>
 
                                 <h3 class="text-sm md:text-xl font-bold text-gray-900 dark:text-white mb-1 md:mb-3 group-hover:text-teal-600 transition-colors leading-tight md:leading-snug line-clamp-2">
@@ -152,7 +152,7 @@
                                 </h3>
 
                                 <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 hidden md:block">
-                                    {{ $post->getExcerpt(120) }}
+                                    {{ $post->excerpt }}
                                 </p>
 
                                 <span class="hidden md:inline-flex items-center gap-2 text-teal-600 font-semibold hover:text-teal-700 transition-colors group/link">

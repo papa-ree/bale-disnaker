@@ -11,8 +11,8 @@
             <a href="{{ route('bale.view-post', $suggested->slug) }}" wire:navigate.hover
                 class="group flex gap-4 bg-white dark:bg-slate-800 p-3 rounded-xl border border-gray-100 dark:border-slate-700 hover:border-teal-600 transition-all duration-300 shadow-sm hover:shadow-md">
                 <div class="w-24 h-24 shrink-0 rounded-lg overflow-hidden">
-                    @if ($suggested->thumbnail)
-                        <img src="{{ cdn_asset('thumbnails/' . $suggested->thumbnail) }}" alt=""
+                    @if ($suggested->hasThumbnail())
+                        <img src="{{ $suggested->thumbnail }}" alt=""
                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                     @else
                         <div class="w-full h-full bg-gray-100 dark:bg-slate-700 flex items-center justify-center">
@@ -26,7 +26,7 @@
                 </div>
                 <div class="flex flex-col justify-center py-1">
                     <span class="text-[10px] font-bold text-teal-600/60 dark:text-teal-400 uppercase tracking-wider mb-1">
-                        {{ $suggested->created_at }}
+                        {{ $suggested->formattedDate() }}
                     </span>
                     <h4
                         class="text-sm font-bold text-gray-900 dark:text-white line-clamp-2 group-hover:text-teal-600 transition-colors duration-300 leading-tight">

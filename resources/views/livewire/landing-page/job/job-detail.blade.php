@@ -54,8 +54,8 @@
                                     </a>
                                 @endif
                                 <div class="mt-2 flex justify-end">
-                                    <x-emperan::share-button :url="route('bale.view-job', $job->slug)"
-                                        :title="$job->nama_pekerjaan" :text="$job->nama_perusahaan" />
+                                    <x-umpak::share-button :url="route('bale.view-job', $job->slug)"
+                                        :title="$job->nama_pekerjaan" />
                                 </div>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                                 $hasBlocks = !empty($editorData['blocks'] ?? []);
                             @endphp
                             @if ($hasBlocks)
-                                <x-emperan::editorjs-renderer :content="$job->persyaratan_kualifikasi" />
+                                <x-umpak::editorjs-renderer :content="$job->persyaratan_kualifikasi" />
                             @else
                                 <p class="text-gray-500 dark:text-gray-400 italic">Belum ada persyaratan yang ditambahkan.</p>
                             @endif
@@ -209,8 +209,7 @@
 
                         {{-- Share Button (Desktop Sidebar) --}}
                         <div class="mt-3 flex justify-end">
-                            <x-emperan::share-button :url="route('bale.view-job', $job->slug)" :title="$job->nama_pekerjaan"
-                                :text="$job->nama_perusahaan" />
+                            <x-umpak::share-button :url="route('bale.view-job', $job->slug)" :title="$job->nama_pekerjaan" />
                         </div>
 
                         {{-- Company Info --}}

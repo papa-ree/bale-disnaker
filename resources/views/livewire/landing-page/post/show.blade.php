@@ -54,9 +54,9 @@
                         </div> --}}
 
                         <article class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-gray-100 dark:border-slate-800 overflow-hidden text-justify">
-                            @if ($post->thumbnail)
-                                <img src="{{ cdn_asset('thumbnails/' . $post->thumbnail) }}"
-                                    alt="{{ $post->title }}" class="w-full h-96 object-cover" />
+                            @if ($this->postData->hasThumbnail())
+                                <img src="{{ $this->postData->thumbnail }}"
+                                    alt="{{ $this->postData->title }}" class="w-full h-96 object-cover" />
                             @else
                                 <div class="bg-gray-100 dark:bg-slate-800 flex items-center justify-center h-96 border-b border-gray-100 dark:border-slate-800">
                                     <svg class="w-20 h-20 text-gray-300 dark:text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,14 +67,14 @@
 
                             <div class="p-8 md:p-12">
                                 <div class="flex flex-wrap items-center gap-4 mb-6">
-                                    @if($post->category)
+                                    @if($this->postData->categorySlug)
                                         <span class="px-3 py-1 bg-teal-600/10 text-teal-600 dark:text-teal-400 text-sm font-bold rounded-full">
-                                            {{ $post->category->name }}
+                                            {{ $this->postData->categorySlug }}
                                         </span>
                                     @endif
                                     <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-sm">
-                                        <x-lucide-calendar class="w-4 h-4" />
-                                        <span>{{ $post->created_at }}</span>
+                                        <x-umpak::icon name="calendar" class="w-4 h-4" />
+                                        <span>{{ $this->postData->formattedDate() }}</span>
                                     </div>
                                     {{-- <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-sm">
                                         <x-lucide-eye class="w-4 h-4" />
@@ -83,12 +83,12 @@
                                 </div>
 
                                 <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-                                    {{ $post->title }}
+                                    {{ $this->postData->title }}
                                 </h1>
 
                                 <div class="prose prose-lg prose-teal dark:prose-invert max-w-none">
-                                    @if ($post->content)
-                                        <x-emperan::editorjs-renderer :content="$post->content" />
+                                    @if ($this->postData->hasContent())
+                                        <x-umpak::editorjs-renderer :content="$this->postData->content" />
                                     @else
                                         <p class="text-gray-500 dark:text-gray-400 text-center py-8">
                                             Tidak ada konten untuk ditampilkan.
@@ -97,10 +97,9 @@
                                 </div>
 
                                 <div class="mt-12 flex justify-end">
-                                    <x-emperan::share-button 
-                                        :url="route('bale.view-post', $post->slug)"
-                                        :title="$post->title"
-                                        :text="$post->getExcerpt(160)"
+                                    <x-umpak::share-button
+                                        :url="route('bale.view-post', $this->postData->slug)"
+                                        :title="$this->postData->title"
                                     />
                                 </div>
                             </div>
@@ -119,7 +118,7 @@
 
                     {{-- Right Column: Sidebar (Suggested Posts) --}}
                     <div class="lg:col-span-4">
-                        <x-bale-disnaker::suggested-posts :posts="$this->suggestedPosts" :currentId="$post->id" />
+                        <x-bale-disnaker::suggested-posts :posts="$this->suggestedPosts" :currentId="$this->postData->id" />
                     </div>
 
                 </div>

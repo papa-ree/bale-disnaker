@@ -2,35 +2,37 @@
 
 namespace Paparee\BaleDisnaker\Livewire\LandingPage\Footer;
 
-use Livewire\Component;
+use Bale\Umpak\DTOs\SectionData;
+use Bale\Umpak\Livewire\UmpakComponent;
 use Livewire\Attributes\Computed;
-use Bale\Emperan\Models\Section;
 
-class Index extends Component
+class Index extends UmpakComponent
 {
     public string $slug = 'footer-section';
-    public array $footer = [];
-    public array $about = [];
-    public $actived;
 
-    public function mount(?string $slug = null)
+    public function mount(?string $slug = null): void
     {
         if ($slug) {
             $this->slug = $slug;
         }
-
-        $footerModel = Section::whereSlug($this->slug)->first();
-        $aboutModel = Section::whereSlug('hero-section')->first();
-
-        $this->footer = $footerModel?->content ?? [];
-        $this->about = $aboutModel?->content ?? [];
-        $this->actived = $footerModel?->actived ?? false;
     }
 
     #[Computed]
-    public function meta()
+    public function footerSection(): ?SectionData
     {
-        return $this->footer['meta'] ?? [];
+        return $this->section($this->slug);
+    }
+
+    #[Computed]
+    public function heroSection(): ?SectionData
+    {
+        return $this->section('hero-section');
+    }
+
+    #[Computed]
+    public function meta(): array
+    {
+        return $this->footerSection?->meta ?? [];
     }
 
     /**
@@ -38,20 +40,20 @@ class Index extends Component
      * Items have: grup["..."], nama["..."], url["..."]
      */
     #[Computed]
-    public function groupedLinks()
+    public function groupedLinks(): array
     {
-        $items = $this->footer['items'] ?? [];
+        $items = $this->footerSection?->items ?? [];
         $links = [];
 
         foreach ($items as $item) {
             $grup = is_array($item['grup'] ?? null) ? ($item['grup'][0] ?? 'Lainnya') : ($item['grup'] ?? 'Lainnya');
             $nama = is_array($item['nama'] ?? null) ? ($item['nama'][0] ?? '') : ($item['nama'] ?? '');
-            $url = is_array($item['url'] ?? null) ? ($item['url'][0] ?? '#') : ($item['url'] ?? '#');
+            $url  = is_array($item['url'] ?? null) ? ($item['url'][0] ?? '#') : ($item['url'] ?? '#');
 
             if (!empty($nama)) {
                 $links[strtolower($grup)][] = [
                     'label' => $nama,
-                    'url' => $url
+                    'url'   => $url,
                 ];
             }
         }
@@ -60,41 +62,42 @@ class Index extends Component
     }
 
     #[Computed]
-    public function socials()
+    public function socials(): array
     {
-        $socialLinks = $this->groupedLinks['social'] ?? [];
-        $socialConfig = config('landing-page.social-media', []);
+        $socialLinks  = $this->groupedLinks['social'] ?? [];
+        $socialConfig = config('umpak.social-media', []);
 
         return collect($socialLinks)->map(function ($link) use ($socialConfig) {
             $key = strtolower($link['label']);
             $cfg = $socialConfig[$key] ?? null;
             return [
-                'url' => $link['url'],
+                'url'  => $link['url'],
                 'icon' => $cfg['icon'] ?? null,
                 'name' => $cfg['name'] ?? ucfirst($key),
-                'key' => $key
+                'key'  => $key,
             ];
         })->toArray();
     }
 
     #[Computed]
-    public function contact()
+    public function contact(): array
     {
         $contactLinks = $this->groupedLinks['contact'] ?? [];
-        $contact = [];
+        $contact      = [];
 
         foreach ($contactLinks as $link) {
-            $type = strtolower($link['label']);
+            $type  = strtolower($link['label']);
             $value = $link['url'];
 
-            if ($type === 'email')
+            if ($type === 'email') {
                 $contact['email'] = $value;
-            elseif ($type === 'alamat' || $type === 'address')
+            } elseif ($type === 'alamat' || $type === 'address') {
                 $contact['address'] = $value;
-            elseif ($type === 'telpon' || $type === 'phone')
+            } elseif ($type === 'telpon' || $type === 'phone') {
                 $contact['phone'] = $value;
-            else
+            } else {
                 $contact[$type] = $value;
+            }
         }
 
         return $contact;

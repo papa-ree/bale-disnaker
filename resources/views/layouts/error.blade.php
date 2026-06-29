@@ -17,13 +17,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 
-    <x-emperan::balystics-tag />
+    <x-umpak::analytics />
 </head>
 
 <body
     class="min-h-screen bg-gray-100 dark:bg-slate-900 scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-100/50 scrollbar-thumb-rounded-full scrollbar-track-rounded-full overscroll-none">
 
-    <livewire:bale-disnaker.shared-components.topbar />
+    <x-bale-disnaker::navbar />
 
     <main class="min-h-[calc(100vh-80px)] flex items-center justify-center pt-20">
         @yield('content')
