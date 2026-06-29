@@ -19,7 +19,7 @@
                         {{-- Icon --}}
                         <div class="w-16 h-16 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110"
                             style="background-color: {{ $service['color'] }}15; color: {{ $service['color'] }}">
-                            <x-dynamic-component :component="'lucide-' . $service['icon']" class="w-8 h-8" />
+                            <x-umpak::icon :name="$service['icon']" fallback="box" class="w-8 h-8" />
                         </div>
 
                         {{-- Content --}}
@@ -59,7 +59,7 @@
                                     <a href="{{ $button['url'] ?? '#' }}" {{ Str::startsWith($button['url'] ?? '', '/') ? 'wire:navigate.hover' : '' }}
                                         class="{{ !empty($button['class']) ? $button['class'] : 'inline-flex items-center justify-center gap-2 px-8 py-4 bg-teal-600 text-white rounded-xl font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl' }}">
                                         @if (!empty($button['icon']))
-                                            <x-dynamic-component :component="'lucide-' . $button['icon']" class="w-[22px] h-[22px]" />
+                                            <x-umpak::icon :name="$button['icon']" fallback="box" class="w-[22px] h-[22px]" />
                                         @endif
                                         {{ $button['label'] ?? 'Hubungi Kami Sekarang' }}
                                     </a>

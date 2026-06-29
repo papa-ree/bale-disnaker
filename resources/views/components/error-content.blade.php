@@ -22,37 +22,37 @@
                         @case('401')
                         @case('403')
                             <div class="inline-flex items-center justify-center w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-full mb-4">
-                                <x-lucide-shield-off class="w-10 h-10 text-red-600 dark:text-red-400" />
+                                <x-umpak::icon name="shield-alert" fallback="shield-off" class="w-10 h-10 text-red-600 dark:text-red-400" />
                             </div>
                             @break
                         @case('402')
                             <div class="inline-flex items-center justify-center w-20 h-20 bg-amber-100 dark:bg-amber-900/30 rounded-full mb-4">
-                                <x-lucide-credit-card class="w-10 h-10 text-amber-600 dark:text-amber-400" />
+                                <x-umpak::icon name="credit-card" class="w-10 h-10 text-amber-600 dark:text-amber-400" />
                             </div>
                             @break
                         @case('419')
                             <div class="inline-flex items-center justify-center w-20 h-20 bg-orange-100 dark:bg-orange-900/30 rounded-full mb-4">
-                                <x-lucide-clock class="w-10 h-10 text-orange-600 dark:text-orange-400" />
+                                <x-umpak::icon name="clock" class="w-10 h-10 text-orange-600 dark:text-orange-400" />
                             </div>
                             @break
                         @case('429')
                             <div class="inline-flex items-center justify-center w-20 h-20 bg-yellow-100 dark:bg-yellow-900/30 rounded-full mb-4">
-                                <x-lucide-zap class="w-10 h-10 text-yellow-600 dark:text-yellow-400" />
+                                <x-umpak::icon name="zap" class="w-10 h-10 text-yellow-600 dark:text-yellow-400" />
                             </div>
                             @break
                         @case('500')
                             <div class="inline-flex items-center justify-center w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-full mb-4">
-                                <x-lucide-alert-triangle class="w-10 h-10 text-red-600 dark:text-red-400" />
+                                <x-umpak::icon name="info" fallback="alert-triangle" class="w-10 h-10 text-red-600 dark:text-red-400" />
                             </div>
                             @break
                         @case('503')
                             <div class="inline-flex items-center justify-center w-20 h-20 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-4">
-                                <x-lucide-settings class="w-10 h-10 text-blue-600 dark:text-blue-400" />
+                                <x-umpak::icon name="settings" class="w-10 h-10 text-blue-600 dark:text-blue-400" />
                             </div>
                             @break
                         @default
                             <div class="inline-flex items-center justify-center w-20 h-20 bg-teal-100 dark:bg-teal-900/30 rounded-full mb-4">
-                                <x-lucide-file-search class="w-10 h-10 text-teal-600 dark:text-teal-400" />
+                                <x-umpak::icon name="file-search-2" fallback="search" class="w-10 h-10 text-teal-600 dark:text-teal-400" />
                             </div>
                     @endswitch
                 </div>
@@ -75,7 +75,7 @@
                 {{-- Back Button --}}
                 <a href="/" wire:navigate
                     class="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-3 rounded-full shadow-lg shadow-teal-600/25 hover:shadow-xl hover:shadow-teal-700/30 transition-all duration-300 transform hover:-translate-y-0.5">
-                    <x-lucide-home class="w-5 h-5" />
+                    <x-umpak::icon name="home" class="w-5 h-5" />
                     Kembali ke Beranda
                 </a>
             </div>

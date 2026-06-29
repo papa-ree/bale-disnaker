@@ -19,11 +19,7 @@
                     <div class="md:col-span-5 relative">
                         <input type="text" placeholder="Judul pekerjaan atau perusahaan..." wire:model="searchQuery"
                             class="w-full pl-12 h-14 pr-4 py-2.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none transition-all dark:text-white">
-                        <svg class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
+                        <x-umpak::icon name="search" class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
                     </div>
 
                     {{-- Job Type Filter --}}
@@ -49,8 +45,8 @@
                     {{-- Search Button --}}
                     <div class="md:col-span-1">
                         <button type="submit" wire:loading.attr="disabled"
-                            class="w-full h-14 bg-teal-600 hover:bg-teal-700 text-white rounded-xl transition-all shadow-lg shadow-teal-600/20 flex items-center justify-center group">
-                            <x-lucide-search wire:loading.remove
+                            class="w-full h-14 bg-teal-600 hover:bg-teal-700 text-white rounded-xl transition-all shadow-lg shadow-teal-600/20 flex items-center justify-center group pointer-events-auto cursor-pointer">
+                            <x-umpak::icon name="search" wire:loading.remove
                                 wire:target="searchQuery, selectedType, selectedCategory, $refresh" class="w-5 h-5" />
                             <svg wire:loading wire:target="searchQuery, selectedType, selectedCategory, $refresh"
                                 class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -88,8 +84,8 @@
                             </span>
                         @endif
                         <button type="button" wire:click="clearFilters"
-                            class="ml-auto text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center gap-1 transition-colors">
-                            <x-lucide-x class="w-4 h-4" />
+                            class="ml-auto text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center gap-1 transition-colors cursor-pointer">
+                            <x-umpak::icon name="x" class="w-4 h-4" />
                             Hapus semua
                         </button>
                     </div>
@@ -144,7 +140,7 @@
 
         {{-- Jobs List --}}
         <div wire:loading.remove wire:target="searchQuery, selectedType, selectedCategory, $refresh, clearFilters">
-            @if ($jobs->count() > 0)
+             @if ($jobs->count() > 0)
                 <div class="max-w-5xl mx-auto space-y-6">
                     @foreach ($jobs as $job)
                         <article
@@ -166,24 +162,24 @@
                                     <div class="flex flex-wrap gap-4 mb-4 text-gray-600 dark:text-gray-400">
                                         @if ($job->lokasi)
                                             <div class="flex items-center gap-2">
-                                                <x-lucide-map-pin class="w-[18px] h-[18px] text-teal-600 dark:text-teal-400" />
+                                                <x-umpak::icon name="map-pin" class="w-[18px] h-[18px] text-teal-600 dark:text-teal-400" />
                                                 <span>{{ $job->lokasi }}</span>
                                             </div>
                                         @endif
                                         @if ($job->tipe)
                                             <div class="flex items-center gap-2">
-                                                <x-lucide-briefcase class="w-[18px] h-[18px] text-blue-600 dark:text-blue-400" />
+                                                <x-umpak::icon name="briefcase" class="w-[18px] h-[18px] text-blue-600 dark:text-blue-400" />
                                                 <span class="capitalize">{{ $job->tipe }}</span>
                                             </div>
                                         @endif
                                         @if ($job->gaji)
                                             <div class="flex items-center gap-2">
-                                                <x-lucide-coins class="w-[18px] h-[18px] text-green-600 dark:text-green-400" />
+                                                <x-umpak::icon name="coins" class="w-[18px] h-[18px] text-green-600 dark:text-green-400" />
                                                 <span>{{ $job->gaji }}</span>
                                             </div>
                                         @endif
                                         <div class="flex items-center gap-2">
-                                            <x-lucide-clock class="w-[18px] h-[18px] text-purple-600 dark:text-purple-400" />
+                                            <x-umpak::icon name="clock" class="w-[18px] h-[18px] text-purple-600 dark:text-purple-400" />
                                             <span>{{ \Carbon\Carbon::parse($job->created_at)->diffForHumans() }}</span>
                                         </div>
                                     </div>
@@ -215,7 +211,7 @@
                                 {{-- Detail Button --}}
                                 <div class="md:ml-6 shrink-0">
                                     <a href="{{ route('bale.view-job', $job->slug) }}"
-                                        class="w-full md:w-auto px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-colors inline-block text-center"
+                                        class="w-full md:w-auto px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-colors inline-block text-center cursor-pointer"
                                         wire:navigate>
                                         Lihat Detail
                                     </a>
@@ -233,14 +229,14 @@
                 <div class="max-w-5xl mx-auto text-center py-16">
                     <div
                         class="w-24 h-24 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-100 dark:border-slate-700">
-                        <x-lucide-search class="text-gray-400 w-10 h-10" />
+                        <x-umpak::icon name="search" class="text-gray-400 w-10 h-10" />
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Tidak ada lowongan ditemukan</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-6">
                         Coba sesuaikan pencarian atau filter Anda untuk menemukan apa yang Anda cari.
                     </p>
                     <button wire:click="clearFilters"
-                        class="inline-flex px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-semibold transition-colors">
+                        class="inline-flex px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-semibold transition-colors cursor-pointer">
                         Hapus Filter
                     </button>
                 </div>

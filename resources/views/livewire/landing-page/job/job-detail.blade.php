@@ -4,7 +4,7 @@
         <div class="max-w-6xl mx-auto mb-8">
             <a href="{{ route('bale.jobs') }}" wire:navigate.hover
                 class="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 hover:text-teal-600 transition-colors">
-                <x-lucide-arrow-left class="w-4 h-4 mr-2" />
+                <x-umpak::icon name="arrow-left" class="w-4 h-4 mr-2" />
                 Kembali ke Lowongan
             </a>
         </div>
@@ -27,18 +27,18 @@
                                 <div class="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
                                     @if ($job->lokasi)
                                         <div class="flex items-center gap-1.5">
-                                            <x-lucide-map-pin class="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                                            <x-umpak::icon name="map-pin" class="w-4 h-4 text-gray-400 dark:text-gray-500" />
                                             {{ $job->lokasi }}
                                         </div>
                                     @endif
                                     @if ($job->tipe)
                                         <div class="flex items-center gap-1.5">
-                                            <x-lucide-briefcase class="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                                            <x-umpak::icon name="briefcase" class="w-4 h-4 text-gray-400 dark:text-gray-500" />
                                             {{ $job->tipe }}
                                         </div>
                                     @endif
                                     <div class="flex items-center gap-1.5">
-                                        <x-lucide-clock class="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                                        <x-umpak::icon name="clock" class="w-4 h-4 text-gray-400 dark:text-gray-500" />
                                         {{ \Carbon\Carbon::parse($job->updated_at)->diffForHumans() }}
                                     </div>
                                 </div>
@@ -107,7 +107,7 @@
                                 <div class="flex items-start gap-4">
                                     <div
                                         class="w-10 h-10 rounded-lg bg-teal-50 dark:bg-teal-900/20 flex items-center justify-center shrink-0">
-                                        <x-lucide-coins class="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                                        <x-umpak::icon name="coins" class="w-5 h-5 text-teal-600 dark:text-teal-400" />
                                     </div>
                                     <div>
                                         <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Gaji</div>
@@ -121,7 +121,7 @@
                                 <div class="flex items-start gap-4">
                                     <div
                                         class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center shrink-0">
-                                        <x-lucide-tag class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                        <x-umpak::icon name="tag" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
                                     </div>
                                     <div>
                                         <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Kategori</div>
@@ -136,7 +136,7 @@
                                 <div class="flex items-start gap-4">
                                     <div
                                         class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center shrink-0">
-                                        <x-lucide-briefcase class="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                                        <x-umpak::icon name="briefcase" class="w-5 h-5 text-purple-600 dark:text-purple-400" />
                                     </div>
                                     <div>
                                         <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Tipe</div>
@@ -151,7 +151,7 @@
                                 <div class="flex items-start gap-4">
                                     <div
                                         class="w-10 h-10 rounded-lg bg-red-50 dark:bg-red-900/20 flex items-center justify-center shrink-0">
-                                        <x-lucide-calendar-x class="w-5 h-5 text-red-600 dark:text-red-400" />
+                                        <x-umpak::icon name="calendar-x" fallback="calendar" class="w-5 h-5 text-red-600 dark:text-red-400" />
                                     </div>
                                     <div>
                                         <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Batas Lamaran</div>
@@ -166,7 +166,7 @@
                             <div class="flex items-start gap-4">
                                 <div
                                     class="w-10 h-10 rounded-lg bg-green-50 dark:bg-green-900/20 flex items-center justify-center shrink-0">
-                                    <x-lucide-calendar class="w-5 h-5 text-green-600 dark:text-green-400" />
+                                    <x-umpak::icon name="calendar" class="w-5 h-5 text-green-600 dark:text-green-400" />
                                 </div>
                                 <div>
                                     <div class="text-sm text-gray-500 dark:text-gray-500 mb-1">Ditayangkan</div>
@@ -188,6 +188,7 @@
                                         fn($m) => '<a href="' . (str_starts_with(strtolower($m[0]), 'http') ? $m[0] : 'https://' . $m[0]) . '" target="_blank" class="underline decoration-wavy decoration-teal-500 hover:text-teal-600 transition-colors">' . $m[0] . '</a>',
                                         $applyText
                                     );
+                                    $applyText = \Bale\Umpak\Support\Sanitizer::cleanHtml($applyText);
                                 @endphp
                                 <div
                                     class="text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-slate-900/50 p-4 rounded-xl leading-relaxed">
@@ -201,7 +202,7 @@
                             <div class="mt-6">
                                 <a href="{{ str_starts_with($job->url_perusahaan, 'http') ? $job->url_perusahaan : 'https://' . $job->url_perusahaan }}"
                                     target="_blank"
-                                    class="w-full block py-3 bg-teal-600 hover:bg-teal-700 text-white text-center rounded-xl font-semibold transition-colors shadow-lg shadow-teal-600/20">
+                                    class="w-full block py-3 bg-teal-605 bg-teal-600 hover:bg-teal-700 text-white text-center rounded-xl font-semibold transition-colors shadow-lg shadow-teal-600/20">
                                     Lamar Sekarang
                                 </a>
                             </div>
@@ -221,18 +222,6 @@
                                     {{ $job->deskripsi_perusahaan }}
                                 </p>
                             @endif
-                            {{-- @if (!empty($job->url_perusahaan))
-                            @php
-                            $domain = parse_url((str_starts_with($job->url_perusahaan, 'http') ? '' : 'http://') .
-                            $job->url_perusahaan, PHP_URL_HOST);
-                            $domain = preg_replace('/^www\./', '', $domain);
-                            @endphp
-                            <a href="{{ 'https://' . $domain }}" target="_blank"
-                                class="inline-flex items-center gap-1.5 mt-3 text-sm text-teal-600 dark:text-teal-400 hover:underline">
-                                <x-lucide-external-link class="w-4 h-4" />
-                                Kunjungi {{ $job->nama_perusahaan }}
-                            </a>
-                            @endif --}}
                         </div>
                     </div>
                 </div>
@@ -242,7 +231,7 @@
             <div class="max-w-6xl mx-auto text-center py-24">
                 <div
                     class="w-24 h-24 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <x-lucide-search class="text-gray-400 w-10 h-10" />
+                    <x-umpak::icon name="search" class="text-gray-400 w-10 h-10" />
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Lowongan Tidak Ditemukan</h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">Lowongan yang Anda cari tidak tersedia atau sudah ditutup.

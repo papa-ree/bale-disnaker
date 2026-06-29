@@ -2,11 +2,7 @@
     $section = $this->sectionData;
 @endphp
 
-@if (!$section || empty($section->meta('title')))
-    {{-- Error Handler: Section Not Found --}}
-    <x-umpak::section-error title="Konten Hero Tidak Ditemukan"
-        message="Silakan konfigurasi section 'hero-section' di panel admin CMS agar konten halaman utama dapat ditampilkan." />
-@else
+@if ($section)
     @php
         $background = $section->meta('background');
         $images     = $background['images'] ?? [];
@@ -23,8 +19,7 @@
         {{-- Background Image with Overlay --}}
         <div class="absolute inset-0 z-0">
             @if ($bgImage)
-                <img src="{{ Str::startsWith($bgImage, 'http') ? $bgImage : cdn_asset($bgImage) }}" alt="{{ $altText }}"
-                    class="w-full h-full object-cover" />
+                <x-umpak::cdn-img :path="$bgImage" :alt="$altText" class="w-full h-full object-cover" :lazy="false" />
             @endif
             <div class="absolute inset-0 bg-linear-to-r from-gray-900/95 via-gray-900/85 to-teal-900/75"></div>
         </div>
@@ -69,11 +64,7 @@
                                 <a href="{{ $button['url'] ?? '#' }}" {{ $button['navigate'] ?? '' }}
                                     @if(!empty($button['target'])) target="{{ $button['target'] }}" rel="noopener noreferrer" @endif
                                     class="group px-8 py-4 bg-teal-600 text-white rounded-xl font-semibold text-lg hover:bg-teal-700 transition-all hover:shadow-lg hover:shadow-teal-600/30 flex items-center justify-center gap-2">
-                                    @if (!empty($button['icon']))
-                                        <x-dynamic-component :component="'lucide-' . $button['icon']" class="w-[22px] h-[22px]" />
-                                    @else
-                                        <x-lucide-search class="w-[22px] h-[22px]" />
-                                    @endif
+                                    <x-umpak::icon :name="$button['icon'] ?? 'search'" class="w-[22px] h-[22px]" />
                                     {{ $button['label'] }}
                                     <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
                                 </a>
@@ -81,11 +72,7 @@
                                 <a href="{{ $button['url'] ?? '#' }}" {{ $button['navigate'] ?? '' }}
                                     @if(!empty($button['target'])) target="{{ $button['target'] }}" rel="noopener noreferrer" @endif
                                     class="px-8 py-4 bg-white/10 backdrop-blur-sm text-white border-2 border-white/20 rounded-xl font-semibold text-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2">
-                                    @if (!empty($button['icon']))
-                                        <x-dynamic-component :component="'lucide-' . $button['icon']" class="w-[22px] h-[22px]" />
-                                    @else
-                                        <x-lucide-briefcase class="w-[22px] h-[22px]" />
-                                    @endif
+                                    <x-umpak::icon :name="$button['icon'] ?? 'briefcase'" class="w-[22px] h-[22px]" />
                                     {{ $button['label'] }}
                                 </a>
                             @endif
@@ -108,4 +95,6 @@
             </div>
         </div>
     </section>
+@else
+    <x-umpak::section-error name="Hero" />
 @endif
