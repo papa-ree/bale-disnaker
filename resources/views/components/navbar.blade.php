@@ -32,14 +32,16 @@
                                 'text-gray-700 dark:text-gray-300' => !str_starts_with(request()->url(), $item->resolvedUrl),
                             ])>
                                 <span>{{ $item->name }}</span>
-                                <x-umpak::icon name="chevron-down" class="w-4 h-4 duration-300" ::class="isDropdownOpen({{ $i }}) ? '-rotate-180' : ''" />
+                                <x-umpak::icon name="chevron-down" class="w-4 h-4 duration-300"
+                                    ::class="isDropdownOpen({{ $i }}) ? '-rotate-180' : ''" />
                             </button>
 
                             <div x-show="isDropdownOpen({{ $i }})" x-cloak x-transition:enter="transition ease-out duration-200"
                                 x-transition:enter-start="opacity-0 translate-y-2"
                                 x-transition:enter-end="opacity-100 translate-y-0"
                                 class="absolute left-1/2 -translate-x-1/2 mt-3 w-56 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-gray-100 dark:border-slate-700/50 py-1.5 z-50">
-                                <div class="py-1 px-1 space-y-0.5 max-h-[calc(100vh-140px)] overflow-y-auto scrollbar-thin scrollbar-thumb-teal-600 scrollbar-track-gray-100/50">
+                                <div
+                                    class="py-1 px-1 space-y-0.5 max-h-[calc(100vh-140px)] overflow-y-auto scrollbar-thin scrollbar-thumb-teal-600 scrollbar-track-gray-100/50">
                                     @foreach ($item->children as $child)
                                         @php
                                             $childInternal = str_starts_with($child->resolvedUrl, '/') || str_contains($child->resolvedUrl, config('app.url'));
