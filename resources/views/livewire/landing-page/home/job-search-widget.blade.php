@@ -69,7 +69,7 @@
                                 <span class="text-sm text-gray-600 dark:text-gray-400 w-full md:w-auto mb-2 md:mb-0">Pencarian
                                     populer:</span>
                                 @foreach ($categories as $cat)
-                                    <button type="button" wire:click="searchCategory('{{ $cat }}')"
+                                    <button type="button" wire:click="searchCategory(@js($cat))"
                                         class="px-3 py-1 bg-gray-100 dark:bg-slate-700 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-700 dark:hover:text-teal-400 text-gray-700 dark:text-gray-300 rounded-full text-sm transition-colors">
                                         {{ $cat }}
                                     </button>

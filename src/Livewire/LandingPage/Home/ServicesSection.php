@@ -57,8 +57,8 @@ class ServicesSection extends UmpakComponent
             $meta['buttons'] = collect($contentMeta['buttons'])->map(function ($button) {
                 $rawUrl     = $button['url'] ?? '#';
                 $isExternal = str_starts_with($rawUrl, 'http');
-                $button['url']      = $isExternal || $rawUrl === '#' ? $rawUrl : url($rawUrl);
-                $button['navigate'] = !$isExternal && $rawUrl !== '#' ? 'wire:navigate.hover' : '';
+                $button['url']      = self::safeUrl($rawUrl);
+                $button['navigate'] = !$isExternal && $button['url'] !== '#' ? 'wire:navigate.hover' : '';
                 $button['target']   = $isExternal ? '_blank' : '';
                 return $button;
             })->toArray();
@@ -90,8 +90,8 @@ class ServicesSection extends UmpakComponent
             $icon        = is_array($item[$iconKey] ?? null) ? ($item[$iconKey][0] ?? 'circle') : ($item[$iconKey] ?? 'circle');
             $rawUrl      = is_array($item[$urlKey] ?? null) ? ($item[$urlKey][0] ?? '#') : ($item[$urlKey] ?? '#');
             $isExternal  = str_starts_with($rawUrl, 'http');
-            $url         = $isExternal || $rawUrl === '#' ? $rawUrl : url($rawUrl);
-            $navigate    = !$isExternal && $rawUrl !== '#' ? 'wire:navigate.hover' : '';
+            $url         = self::safeUrl($rawUrl);
+            $navigate    = !$isExternal && $url !== '#' ? 'wire:navigate.hover' : '';
             $target      = $isExternal ? '_blank' : '';
 
             return [

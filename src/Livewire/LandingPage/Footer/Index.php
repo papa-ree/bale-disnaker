@@ -46,9 +46,10 @@ class Index extends UmpakComponent
         $links = [];
 
         foreach ($items as $item) {
-            $grup = is_array($item['grup'] ?? null) ? ($item['grup'][0] ?? 'Lainnya') : ($item['grup'] ?? 'Lainnya');
-            $nama = is_array($item['nama'] ?? null) ? ($item['nama'][0] ?? '') : ($item['nama'] ?? '');
-            $url  = is_array($item['url'] ?? null) ? ($item['url'][0] ?? '#') : ($item['url'] ?? '#');
+            $grup   = is_array($item['grup'] ?? null) ? ($item['grup'][0] ?? 'Lainnya') : ($item['grup'] ?? 'Lainnya');
+            $nama   = is_array($item['nama'] ?? null) ? ($item['nama'][0] ?? '') : ($item['nama'] ?? '');
+            $rawUrl = is_array($item['url'] ?? null) ? ($item['url'][0] ?? '#') : ($item['url'] ?? '#');
+            $url    = self::safeUrl($rawUrl);
 
             if (!empty($nama)) {
                 $links[strtolower($grup)][] = [
