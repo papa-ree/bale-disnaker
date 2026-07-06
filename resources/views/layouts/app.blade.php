@@ -11,8 +11,8 @@
         'image' => cdn_asset('shared/og-default.png')
     ]" />
 
-    <link rel="icon" type="image/x-icon" href="{{ cdn_asset('shared/favicon.ico') }}"
-        referrerpolicy="{{ app()->isLocal() ? 'no-referrer' : 'strict-origin-when-cross-origin' }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" sizes="48x48">
 
     {{-- Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">

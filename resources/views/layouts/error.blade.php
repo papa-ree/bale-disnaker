@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>@yield('title', 'Error') - Dinas Tenaga Kerja Kabupaten Ponorogo</title>
-    <link rel="icon" type="image/x-icon" href="{{ cdn_asset('shared/favicon.ico') }}" referrerpolicy="no-referrer">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" sizes="48x48">
 
     {{-- Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
