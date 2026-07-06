@@ -67,17 +67,27 @@ class BaleDisnakerServiceProvider extends ServiceProvider
         if ($this->isActiveLandingPage()) {
             $this->app->booted(function () {
                 $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+
+                // Daftarkan LandingPageComposer hanya untuk views package ini.
+                // Tanpa guard ini, composer akan menjalankan DB query pada semua
+                // bale lain yang berjalan di server atau shared Redis yang sama.
+                \Bale\Umpak\UmpakServiceProvider::registerLandingPageComposer('bale-disnaker::*');
             });
 
             // Prepend package view directory to prioritize its views (including errors)
             $this->app['view']->prependLocation(__DIR__ . '/../resources/views');
+
+            // Guard: Livewire component hanya didaftarkan saat bale ini aktif.
+            // Tanpa ini, class reference tersimpan di shared Redis dan crash
+            // di project production yang tidak memiliki class tersebut.
+            $this->registerLivewireComponents();
         }
 
         $this->offerPublishing();
 
         $this->registerViews();
-        $this->registerLivewireComponents();
     }
+
 
     protected function registerViews(): void
     {
