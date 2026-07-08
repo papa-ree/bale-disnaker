@@ -105,7 +105,7 @@
                                     <span
                                         class="w-[18px] h-[18px] flex items-center justify-center [&>svg]:w-[18px] [&>svg]:h-[18px]">
                                         @if($social['icon'])
-                                            {!! \Bale\Umpak\Support\Sanitizer::cleanSvg($social['icon']) !!}
+                                            {!! $social['icon'] !!}
                                         @else
                                             <x-umpak::icon name="link" class="w-[18px] h-[18px]" />
                                         @endif

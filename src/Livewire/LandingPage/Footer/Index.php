@@ -66,6 +66,18 @@ class Index extends UmpakComponent
                     'label'    => $nama,
                     'rawValue' => trim($rawValue),
                 ];
+            } elseif ($grupKey === 'social') {
+                // Untuk social media, pastikan ditambahkan https:// jika tidak mempunyai scheme (misal instagram.com)
+                $url = trim($rawValue);
+                if (!empty($url) && $url !== '#') {
+                    if (!\Illuminate\Support\Str::startsWith($url, ['http://', 'https://'])) {
+                        $url = 'https://' . $url;
+                    }
+                }
+                $links[$grupKey][] = [
+                    'label' => $nama,
+                    'url'   => self::safeUrl($url ?: '#'),
+                ];
             } else {
                 $links[$grupKey][] = [
                     'label' => $nama,
