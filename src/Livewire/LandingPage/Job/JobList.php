@@ -90,8 +90,8 @@ class JobList extends Component
         if (!empty($this->searchQuery)) {
             $search = addcslashes($this->searchQuery, '%_');
             $query->where(function ($q) use ($search) {
-                $q->where('nama_pekerjaan', 'like', "%{$search}%", '\\')
-                  ->orWhere('nama_perusahaan', 'like', "%{$search}%", '\\');
+                $q->where('nama_pekerjaan', 'like', "%{$search}%")
+                  ->orWhere('nama_perusahaan', 'like', "%{$search}%");
             });
         }
 
