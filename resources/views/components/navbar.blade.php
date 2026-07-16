@@ -1,5 +1,8 @@
 <header x-data="umpakNav()" wire:cloak @click.outside="closeDropdown(); mobileOpen = false"
     class="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm border-b border-gray-100 dark:border-slate-800">
+
+    <x-gupa::honeypot fieldName="website_url" action="{{ route('index') }}" />
+
     <nav class="container mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
             {{-- Logo and Brand --}}
