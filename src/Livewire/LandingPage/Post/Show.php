@@ -4,7 +4,8 @@ namespace Paparee\BaleDisnaker\Livewire\LandingPage\Post;
 
 use Bale\Umpak\DTOs\PostData;
 use Bale\Umpak\Livewire\UmpakComponent;
-use Livewire\Attributes\{Computed, Layout};
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 
 #[Layout('bale-disnaker::layouts.app')]
 class Show extends UmpakComponent
@@ -21,7 +22,7 @@ class Show extends UmpakComponent
     {
         $found = $this->post($this->postSlug);
 
-        if (!$found) {
+        if (! $found) {
             abort(404, 'Berita tidak ditemukan');
         }
 
@@ -38,7 +39,7 @@ class Show extends UmpakComponent
     {
         return view('bale-disnaker::livewire.landing-page.post.show')
             ->layout('bale-disnaker::layouts.app', [
-                'title'    => $this->postData?->title,
+                'title' => $this->postData?->title,
                 'seoModel' => $this->postData?->seo,
             ]);
     }

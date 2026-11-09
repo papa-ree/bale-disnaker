@@ -4,7 +4,8 @@ namespace Paparee\BaleDisnaker\Livewire\LandingPage\Page;
 
 use Bale\Umpak\DTOs\PageData;
 use Bale\Umpak\Livewire\UmpakComponent;
-use Livewire\Attributes\{Computed, Layout};
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 
 #[Layout('bale-disnaker::layouts.app')]
 class Index extends UmpakComponent
@@ -21,7 +22,7 @@ class Index extends UmpakComponent
     {
         $found = $this->page($this->pageSlug);
 
-        if (!$found) {
+        if (! $found) {
             abort(404, 'Halaman tidak ditemukan');
         }
 
@@ -33,7 +34,7 @@ class Index extends UmpakComponent
         return view('bale-disnaker::livewire.landing-page.page.index', [
             'page' => $this->pageData,
         ])->layout('bale-disnaker::layouts.app', [
-            'title'    => $this->pageData?->title,
+            'title' => $this->pageData?->title,
             'seoModel' => $this->pageData?->seo,
         ]);
     }

@@ -34,11 +34,11 @@ class Hero extends UmpakComponent
     {
         $section = $this->sectionData;
 
-        if (!$section) {
+        if (! $section) {
             return [];
         }
 
-        $order    = $section->meta('order', []);
+        $order = $section->meta('order', []);
         $labelKey = $order[0] ?? 'nama_stat';
         $valueKey = $order[1] ?? 'nilai';
 

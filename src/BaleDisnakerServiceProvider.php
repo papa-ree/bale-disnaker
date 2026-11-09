@@ -2,14 +2,17 @@
 
 namespace Paparee\BaleDisnaker;
 
-use Bale\Umpak\Concerns\HasLivewireComponents;
+use Bale\Tala\Events\TalaAuthenticated;
+use Bale\Tala\Panel;
 use Bale\Umpak\Concerns\HasLandingPageGuard;
+use Bale\Umpak\Concerns\HasLivewireComponents;
 use Bale\Umpak\Umpak;
+use Bale\Umpak\UmpakServiceProvider;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
-use Livewire\Component as LivewireComponent;
 use Livewire\Livewire;
-use Symfony\Component\Finder\Finder;
+use Paparee\BaleDisnaker\Listeners\RecordCitizenProfile;
+use Paparee\BaleDisnaker\Livewire\Panel\Overview;
+use Paparee\BaleDisnaker\Livewire\Panel\ProfilIdentitas;
 
 class BaleDisnakerServiceProvider extends ServiceProvider
 {
@@ -17,18 +20,29 @@ class BaleDisnakerServiceProvider extends ServiceProvider
 
     /**
      * Method register()
-     * 
+     *
      * Digunakan untuk mendaftarkan service, binding, atau command
      * ke dalam service container Laravel.
      */
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__.'/../config/bale-disnaker.php', 'bale-disnaker');
+
         $this->registerCommands();
 
         // Register to Umpak registry using resolving hook
         $this->app->resolving(Umpak::class, function (Umpak $umpak) {
             $umpak->registerLandingPage('disnaker', 'Dinas Tenaga Kerja');
         });
+
+        // Panel warga: hanya saat theme ini aktif.
+        if ($this->isActiveLandingPage()) {
+            $this->app->resolving(Panel::class, function (Panel $panel) {
+                $panel->registerPackage('disnaker', 'Dinas Tenaga Kerja');
+                $panel->registerOverview(Overview::class);
+                $panel->registerProfileSection(ProfilIdentitas::class);
+            });
+        }
     }
 
     /**
@@ -53,7 +67,7 @@ class BaleDisnakerServiceProvider extends ServiceProvider
 
     /**
      * Method boot()
-     * 
+     *
      * Dipanggil setelah semua service diregistrasi.
      * Digunakan untuk load resource seperti:
      * - view
@@ -66,21 +80,24 @@ class BaleDisnakerServiceProvider extends ServiceProvider
         // Only load resources if this landing page is active
         if ($this->isActiveLandingPage()) {
             $this->app->booted(function () {
-                $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+                $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
                 // Daftarkan LandingPageComposer hanya untuk views package ini.
                 // Tanpa guard ini, composer akan menjalankan DB query pada semua
                 // bale lain yang berjalan di server atau shared Redis yang sama.
-                \Bale\Umpak\UmpakServiceProvider::registerLandingPageComposer('bale-disnaker::*');
+                UmpakServiceProvider::registerLandingPageComposer('bale-disnaker::*');
             });
 
             // Prepend package view directory to prioritize its views (including errors)
-            $this->app['view']->prependLocation(__DIR__ . '/../resources/views');
+            $this->app['view']->prependLocation(__DIR__.'/../resources/views');
 
             // Guard: Livewire component hanya didaftarkan saat bale ini aktif.
             // Tanpa ini, class reference tersimpan di shared Redis dan crash
             // di project production yang tidak memiliki class tersebut.
             $this->registerLivewireComponents();
+
+            // Profil warga ditulis oleh pemilik tabel pelatihan, bukan tala.
+            $this->app['events']->listen(TalaAuthenticated::class, RecordCitizenProfile::class);
         }
 
         $this->offerPublishing();
@@ -88,29 +105,28 @@ class BaleDisnakerServiceProvider extends ServiceProvider
         $this->registerViews();
     }
 
-
     protected function registerViews(): void
     {
         $this->loadViewsFrom(
-            __DIR__ . '/../resources/views',
+            __DIR__.'/../resources/views',
             'bale-disnaker'
         );
     }
 
     protected function offerPublishing(): void
     {
-        if (!$this->app->runningInConsole()) {
+        if (! $this->app->runningInConsole()) {
             return;
         }
 
         // Publish config
         $this->publishes([
-            __DIR__ . '/../config/bale-disnaker.php' => config_path('bale-disnaker.php'),
+            __DIR__.'/../config/bale-disnaker.php' => config_path('bale-disnaker.php'),
         ], 'disnaker:config');
 
         // Publish error views
         $this->publishes([
-            __DIR__ . '/../resources/views/errors' => resource_path('views/errors'),
+            __DIR__.'/../resources/views/errors' => resource_path('views/errors'),
         ], 'disnaker:errors');
     }
 
@@ -118,7 +134,7 @@ class BaleDisnakerServiceProvider extends ServiceProvider
     {
         $this->discoverLivewireComponents(
             __DIR__.'/Livewire',
-            'Paparee\\BaleDisnaker\\Livewire',
+            'Paparee\BaleDisnaker\\Livewire',
             'bale-disnaker'
         );
     }

@@ -2,22 +2,23 @@
 
 namespace Paparee\BaleDisnaker\Livewire\LandingPage\Job;
 
-use Livewire\Component;
-use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 #[Layout('bale-disnaker::layouts.app')]
 class JobDetail extends Component
 {
     public string $slug;
+
     public ?object $job = null;
 
     public function mount(string $slug): void
     {
         $this->slug = $slug;
-        $this->job  = $this->getJob($slug);
+        $this->job = $this->getJob($slug);
 
-        if (!$this->job) {
+        if (! $this->job) {
             redirect()->route('bale.jobs');
         }
     }

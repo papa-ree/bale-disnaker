@@ -2,8 +2,8 @@
 
 namespace Paparee\BaleDisnaker\Livewire;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Livewire\Attributes\{Layout};
 
 #[Layout('bale-disnaker::layouts.app')]
 class Index extends Component

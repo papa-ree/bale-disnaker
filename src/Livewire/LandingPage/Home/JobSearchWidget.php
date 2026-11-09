@@ -10,6 +10,7 @@ use Livewire\Attributes\Computed;
 class JobSearchWidget extends UmpakComponent
 {
     public string $slug = 'job-widget-section';
+
     public string $keyword = '';
 
     public function mount(?string $slug = null): void

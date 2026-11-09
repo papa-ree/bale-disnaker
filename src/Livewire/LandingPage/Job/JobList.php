@@ -2,11 +2,11 @@
 
 namespace Paparee\BaleDisnaker\Livewire\LandingPage\Job;
 
-use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
+use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\DB;
 
 #[Layout('bale-disnaker::layouts.app')]
 class JobList extends Component
@@ -87,11 +87,11 @@ class JobList extends Component
             ->orderBy('created_at', 'desc');
 
         // Filter pencarian
-        if (!empty($this->searchQuery)) {
+        if (! empty($this->searchQuery)) {
             $search = addcslashes($this->searchQuery, '%_');
             $query->where(function ($q) use ($search) {
                 $q->where('nama_pekerjaan', 'like', "%{$search}%")
-                  ->orWhere('nama_perusahaan', 'like', "%{$search}%");
+                    ->orWhere('nama_perusahaan', 'like', "%{$search}%");
             });
         }
 
@@ -119,10 +119,10 @@ class JobList extends Component
     public function render()
     {
         return view('bale-disnaker::livewire.landing-page.job.job-list', [
-            'jobs'       => $this->filteredJobs,
-            'jobTypes'   => $this->jobTypes,
+            'jobs' => $this->filteredJobs,
+            'jobTypes' => $this->jobTypes,
             'categories' => $this->categories,
-            'meta'       => [],
+            'meta' => [],
         ]);
     }
 }

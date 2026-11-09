@@ -4,7 +4,9 @@ namespace Paparee\BaleDisnaker\Livewire\LandingPage\Post;
 
 use Bale\Umpak\DTOs\SectionData;
 use Bale\Umpak\Livewire\UmpakComponent;
-use Livewire\Attributes\{Computed, Layout, Url};
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 
 #[Layout('bale-disnaker::layouts.app')]
 class PostList extends UmpakComponent

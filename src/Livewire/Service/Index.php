@@ -4,7 +4,8 @@ namespace Paparee\BaleDisnaker\Livewire\Service;
 
 use Bale\Umpak\DTOs\SectionData;
 use Bale\Umpak\Livewire\UmpakComponent;
-use Livewire\Attributes\{Computed, Layout};
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 
 #[Layout('bale-disnaker::layouts.app')]
 class Index extends UmpakComponent
@@ -21,23 +22,23 @@ class Index extends UmpakComponent
         $section = $this->sectionData;
 
         $defaultMeta = [
-            'title'    => 'Layanan Kami',
+            'title' => 'Layanan Kami',
             'subtitle' => 'Solusi tenaga kerja komprehensif yang dirancang untuk memberdayakan pencari kerja dan pemberi kerja.',
-            'custom'   => [
-                'columns'           => 3,
-                'icon_style'        => 'outline',
-                'judul_bantuan'     => 'Butuh bantuan dengan layanan kami?',
+            'custom' => [
+                'columns' => 3,
+                'icon_style' => 'outline',
+                'judul_bantuan' => 'Butuh bantuan dengan layanan kami?',
                 'deskripsi_bantuan' => 'Tim kami siap membantu Anda dengan layanan ketenagakerjaan, program pelatihan, dan solusi tenaga kerja.',
             ],
             'buttons' => [],
         ];
 
-        if (!$section) {
+        if (! $section) {
             return $defaultMeta;
         }
 
         $contentMeta = $section->meta;
-        $meta        = array_merge($defaultMeta, $contentMeta);
+        $meta = array_merge($defaultMeta, $contentMeta);
 
         if (isset($contentMeta['custom']) && is_array($contentMeta['custom'])) {
             $meta['custom'] = array_merge($defaultMeta['custom'], $contentMeta['custom']);
@@ -55,7 +56,7 @@ class Index extends UmpakComponent
     {
         $section = $this->sectionData;
 
-        if (!$section || !$section->hasItems()) {
+        if (! $section || ! $section->hasItems()) {
             return collect();
         }
 
@@ -63,11 +64,11 @@ class Index extends UmpakComponent
 
         $services = collect($section->items)->map(function ($item, $index) use ($colors) {
             return [
-                'title'       => $item['judul'][0]  ?? ($item['judul']  ?? ''),
+                'title' => $item['judul'][0] ?? ($item['judul'] ?? ''),
                 'description' => $item['deskripsi'][0] ?? ($item['deskripsi'] ?? ''),
-                'icon'        => $item['icon'][0]   ?? ($item['icon']   ?? 'circle'),
-                'url'         => $item['url'][0]    ?? ($item['url']    ?? '#'),
-                'color'       => $colors[$index % count($colors)],
+                'icon' => $item['icon'][0] ?? ($item['icon'] ?? 'circle'),
+                'url' => $item['url'][0] ?? ($item['url'] ?? '#'),
+                'color' => $colors[$index % count($colors)],
             ];
         });
 
@@ -79,7 +80,7 @@ class Index extends UmpakComponent
     {
         return view('bale-disnaker::livewire.service.index', [
             'services' => $this->services,
-            'meta'     => $this->meta,
+            'meta' => $this->meta,
         ]);
     }
 }
