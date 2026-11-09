@@ -39,6 +39,8 @@ class Form extends Component
 
     public function mount(string $type = 'masyarakat'): void
     {
+        abort_unless(config('tala.enabled'), 404);
+
         $this->type = $type === 'perusahaan' ? 'perusahaan' : 'masyarakat';
         $this->data = $this->blank();
 

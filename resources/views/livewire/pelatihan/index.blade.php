@@ -25,6 +25,7 @@
                         @endif
                     </div>
 
+                    @if(config('tala.enabled'))
                     @guest('tala')
                         <div class="rounded-3xl border border-teal-100 bg-teal-50/60 p-6 text-center dark:border-teal-900/40 dark:bg-teal-900/10">
                             <p class="text-sm font-medium text-teal-800 dark:text-teal-200">
@@ -64,6 +65,7 @@
                             @endforeach
                         </div>
                     @endauth
+                    @endif
                 @endif
             </div>
         </div>

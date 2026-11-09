@@ -89,17 +89,19 @@
                     Cari Lowongan Kerja
                 </a>
 
-                @auth('tala')
-                    <a href="{{ route('tala.panel.disnaker.status') }}" wire:navigate.hover
-                        class="px-5 py-2.5 border border-teal-600 text-teal-700 dark:text-teal-400 rounded-lg font-medium hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors">
-                        Akun
-                    </a>
-                @else
-                    <a href="{{ route('tala.redirect') }}"
-                        class="px-5 py-2.5 border border-teal-600 text-teal-700 dark:text-teal-400 rounded-lg font-medium hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors">
-                        Masuk
-                    </a>
-                @endauth
+                @if(config('tala.enabled'))
+                    @auth('tala')
+                        <a href="{{ route('tala.panel.disnaker.status') }}" wire:navigate.hover
+                            class="px-5 py-2.5 border border-teal-600 text-teal-700 dark:text-teal-400 rounded-lg font-medium hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors">
+                            Akun
+                        </a>
+                    @else
+                        <a href="{{ route('tala.redirect') }}"
+                            class="px-5 py-2.5 border border-teal-600 text-teal-700 dark:text-teal-400 rounded-lg font-medium hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors">
+                            Masuk
+                        </a>
+                    @endauth
+                @endif
             </div>
 
             {{-- Mobile Actions --}}
@@ -175,17 +177,19 @@
                         Cari Lowongan Kerja
                     </a>
 
-                    @auth('tala')
-                        <a href="{{ route('tala.panel.disnaker.status') }}" @click="onLinkClick()" wire:navigate.hover
-                            class="px-6 py-2.5 border border-teal-600 text-teal-700 dark:text-teal-400 rounded-lg font-medium text-center transition-colors hover:bg-teal-50 dark:hover:bg-teal-900/20">
-                            Akun
-                        </a>
-                    @else
-                        <a href="{{ route('tala.redirect') }}" @click="onLinkClick()"
-                            class="px-6 py-2.5 border border-teal-600 text-teal-700 dark:text-teal-400 rounded-lg font-medium text-center transition-colors hover:bg-teal-50 dark:hover:bg-teal-900/20">
-                            Masuk
-                        </a>
-                    @endauth
+                    @if(config('tala.enabled'))
+                        @auth('tala')
+                            <a href="{{ route('tala.panel.disnaker.status') }}" @click="onLinkClick()" wire:navigate.hover
+                                class="px-6 py-2.5 border border-teal-600 text-teal-700 dark:text-teal-400 rounded-lg font-medium text-center transition-colors hover:bg-teal-50 dark:hover:bg-teal-900/20">
+                                Akun
+                            </a>
+                        @else
+                            <a href="{{ route('tala.redirect') }}" @click="onLinkClick()"
+                                class="px-6 py-2.5 border border-teal-600 text-teal-700 dark:text-teal-400 rounded-lg font-medium text-center transition-colors hover:bg-teal-50 dark:hover:bg-teal-900/20">
+                                Masuk
+                            </a>
+                        @endauth
+                    @endif
                 </div>
             </div>
         </div>

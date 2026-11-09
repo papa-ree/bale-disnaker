@@ -2,6 +2,7 @@
 
 namespace Paparee\BaleDisnaker\Livewire\Pelatihan;
 
+use Illuminate\Support\Facades\Route;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -18,7 +19,8 @@ class Index extends Component
         $user = auth('tala')->user();
         $period = Period::active();
 
-        if ($user && $period && Submission::where('period_id', $period->id)->where('user_uuid', $user->uuid)->exists()) {
+        if ($user && $period && Submission::where('period_id', $period->id)->where('user_uuid', $user->uuid)->exists()
+            && Route::has('tala.panel.disnaker.status')) {
             $this->redirect(route('tala.panel.disnaker.status'), navigate: true);
         }
     }
