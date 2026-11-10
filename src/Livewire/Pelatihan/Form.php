@@ -55,7 +55,7 @@ class Form extends Component
 
         // Satu permintaan per akun per periode, lintas kedua formulir.
         if (Submission::where('period_id', $period->id)->where('user_uuid', $user->uuid)->exists()) {
-            $this->redirect(route('tala.panel.disnaker.status'), navigate: true);
+            $this->redirect(route('tala.panel.disnaker.status'), navigate: false);
 
             return;
         }
@@ -172,7 +172,7 @@ class Form extends Component
             ->exists();
 
         if ($alreadySubmitted) {
-            $this->redirect(route('tala.panel.disnaker.status'), navigate: true);
+            $this->redirect(route('tala.panel.disnaker.status'), navigate: false);
 
             return;
         }
@@ -201,7 +201,7 @@ class Form extends Component
             $this->deleteDraft();
         });
 
-        $this->redirect(route('tala.panel.disnaker.status'), navigate: true);
+        $this->redirect(route('tala.panel.disnaker.status'), navigate: false);
     }
 
     public function render()

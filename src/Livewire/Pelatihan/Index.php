@@ -21,7 +21,7 @@ class Index extends Component
 
         if ($user && $period && Submission::where('period_id', $period->id)->where('user_uuid', $user->uuid)->exists()
             && Route::has('tala.panel.disnaker.status')) {
-            $this->redirect(route('tala.panel.disnaker.status'), navigate: true);
+            $this->redirect(route('tala.panel.disnaker.status'), navigate: false);
         }
     }
 

@@ -22,7 +22,9 @@
                     @php
                         $isInternal = str_starts_with($item->resolvedUrl, '/') || str_contains($item->resolvedUrl, config('app.url'));
                         $isAnchor = str_contains($item->resolvedUrl, '#');
-                        $useNavigate = $isInternal && !$isAnchor;
+                        // /panel/* redirect ke SSO Keycloak; prefetch Livewire akan gagal CORS.
+                        $isPanel = str_contains($item->resolvedUrl, '/panel/');
+                        $useNavigate = $isInternal && !$isAnchor && !$isPanel;
                     @endphp
 
                     @if ($item->hasChildren())
@@ -49,7 +51,8 @@
                                         @php
                                             $childInternal = str_starts_with($child->resolvedUrl, '/') || str_contains($child->resolvedUrl, config('app.url'));
                                             $childAnchor = str_contains($child->resolvedUrl, '#');
-                                            $childNavigate = $childInternal && !$childAnchor;
+                                            $childPanel = str_contains($child->resolvedUrl, '/panel/');
+                                            $childNavigate = $childInternal && !$childAnchor && !$childPanel;
                                         @endphp
                                         <a href="{{ $child->resolvedUrl }}" @if($childNavigate) wire:navigate.hover @endif
                                             class="flex items-center p-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-gray-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors">
@@ -91,7 +94,7 @@
 
                 @if(config('tala.enabled'))
                     @auth('tala')
-                        <a href="{{ route('tala.panel.disnaker.status') }}" wire:navigate.hover
+                        <a href="{{ route('tala.panel.disnaker.status') }}"
                             class="px-5 py-2.5 border border-teal-600 text-teal-700 dark:text-teal-400 rounded-lg font-medium hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors">
                             Akun
                         </a>
@@ -129,7 +132,9 @@
                     @php
                         $isInternal = str_starts_with($item->resolvedUrl, '/') || str_contains($item->resolvedUrl, config('app.url'));
                         $isAnchor = str_contains($item->resolvedUrl, '#');
-                        $useNavigate = $isInternal && !$isAnchor;
+                        // /panel/* redirect ke SSO Keycloak; prefetch Livewire akan gagal CORS.
+                        $isPanel = str_contains($item->resolvedUrl, '/panel/');
+                        $useNavigate = $isInternal && !$isAnchor && !$isPanel;
                     @endphp
 
                     @if ($item->hasChildren())
@@ -149,7 +154,8 @@
                                     @php
                                         $childInternal = str_starts_with($child->resolvedUrl, '/') || str_contains($child->resolvedUrl, config('app.url'));
                                         $childAnchor = str_contains($child->resolvedUrl, '#');
-                                        $childNavigate = $childInternal && !$childAnchor;
+                                        $childPanel = str_contains($child->resolvedUrl, '/panel/');
+                                        $childNavigate = $childInternal && !$childAnchor && !$childPanel;
                                     @endphp
                                     <a href="{{ $child->resolvedUrl }}" @if($childNavigate) wire:navigate.hover @endif
                                         @click="onLinkClick()"
@@ -179,7 +185,7 @@
 
                     @if(config('tala.enabled'))
                         @auth('tala')
-                            <a href="{{ route('tala.panel.disnaker.status') }}" @click="onLinkClick()" wire:navigate.hover
+                            <a href="{{ route('tala.panel.disnaker.status') }}" @click="onLinkClick()"
                                 class="px-6 py-2.5 border border-teal-600 text-teal-700 dark:text-teal-400 rounded-lg font-medium text-center transition-colors hover:bg-teal-50 dark:hover:bg-teal-900/20">
                                 Akun
                             </a>
