@@ -110,7 +110,7 @@
                     <p class="text-xs text-gray-500 dark:text-slate-400">
                         Klaster disusun dari hasil analisis Gemini AI
                         @if ($summary['analysed_at'])
-                            · analisis terakhir {{ $summary['analysed_at']->translatedFormat('j F Y') }}
+                            · analisis terakhir {{ $summary['analysed_at'] }}
                         @endif
                     </p>
                     <p class="text-xs text-gray-500 dark:text-slate-400">

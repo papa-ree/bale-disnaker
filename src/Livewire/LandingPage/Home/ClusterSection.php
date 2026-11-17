@@ -50,7 +50,7 @@ class ClusterSection extends UmpakComponent
             ?: config('database.connections.'.config('database.default').'.database');
 
         return Cache::remember(
-            'disnaker.cluster-section.'.$tenant.'.'.$periodId.'.v2',
+            'disnaker.cluster-section.'.$tenant.'.'.$periodId.'.v3',
             now()->addMinutes(10),
             function () use ($periodId) {
                 $period = Period::find($periodId);
@@ -71,7 +71,9 @@ class ClusterSection extends UmpakComponent
                 return [
                     'period_label' => trim(ucfirst((string) $period?->name).' · '.$period?->year, ' ·'),
                     'is_active_period' => (bool) $period?->is_active,
-                    'analysed_at' => $period?->last_ai_run_at,
+                    // Simpan label, bukan objek Carbon: entri cache bisa di-unserialize
+                    // sebelum class Carbon ter-autoload.
+                    'analysed_at' => $period?->last_ai_run_at?->translatedFormat('j F Y'),
                     'total' => (int) $clusters->sum('submissions_count'),
                     'clusters' => $clusters->map(fn (Cluster $cluster) => [
                         'name' => $cluster->name,
