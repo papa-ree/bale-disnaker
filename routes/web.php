@@ -8,6 +8,7 @@ use Paparee\BaleDisnaker\Livewire\LandingPage\Job\JobList;
 use Paparee\BaleDisnaker\Livewire\LandingPage\Page\Index as PageIndex;
 use Paparee\BaleDisnaker\Livewire\LandingPage\Post\PostList;
 use Paparee\BaleDisnaker\Livewire\LandingPage\Post\Show as PostShow;
+use Paparee\BaleDisnaker\Livewire\LandingPage\Program\ProgramList;
 use Paparee\BaleDisnaker\Livewire\Pelatihan\Form as PelatihanForm;
 use Paparee\BaleDisnaker\Livewire\Pelatihan\Index as PelatihanIndex;
 use Paparee\BaleDisnaker\Livewire\Service\Index as ServiceIndex;
@@ -19,6 +20,7 @@ Route::middleware(['web'])->group(function () {
         // Routes untuk landing page disnaker
         Route::get('page/{page}', PageIndex::class)->name('view-page');
         Route::get('posts', PostList::class)->name('post-list');
+        Route::get('programs', ProgramList::class)->name('programs');
         Route::get('post/{post}', PostShow::class)->name('view-post');
         Route::get('jobs', JobList::class)->name('jobs');
         Route::get('jobs/{slug}', JobDetail::class)->name('view-job');
