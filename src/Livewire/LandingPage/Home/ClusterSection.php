@@ -13,12 +13,23 @@ use Paparee\BaleDisnaker\Models\Submission;
  *
  * Hanya klaster `approved` yang tampil; periode yang dipakai adalah periode
  * terakhir yang punya klaster disetujui, bukan selalu periode aktif.
+ * Section disembunyikan bila `pelatihan-section` belum ada di CMS.
  */
 class ClusterSection extends UmpakComponent
 {
+    public string $slug = 'pelatihan-section';
+
+    public function mount(?string $slug = null): void
+    {
+        if ($slug) {
+            $this->slug = $slug;
+        }
+    }
+
     public function render()
     {
         return view('bale-disnaker::livewire.landing-page.home.cluster-section', [
+            'section' => $this->section($this->slug),
             'summary' => $this->summary(),
         ]);
     }

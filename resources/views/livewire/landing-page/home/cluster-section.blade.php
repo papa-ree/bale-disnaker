@@ -1,13 +1,17 @@
 @php
     $summary = $summary ?? null;
+    $section = $section ?? null;
     $clusters = $summary['clusters'] ?? [];
     $max = $clusters ? max(array_column($clusters, 'count')) : 1;
     $masyarakatShare = $summary && $summary['total'] > 0
         ? $summary['masyarakat'] / $summary['total'] * 100
         : 0;
+    $title = $section?->meta('title', 'Usulan pelatihan yang paling banyak masuk');
+    $subtitle = $section?->meta('subtitle', 'Aspirasi warga dan perusahaan yang sudah dikelompokkan dan disetujui Dinas Tenaga Kerja.');
 @endphp
 
-@if ($summary && $clusters)
+<div>
+@if ($section && $summary && $clusters)
     <section id="kebutuhan-pelatihan" class="py-20 bg-slate-50 dark:bg-slate-950">
         <style>
             .js-bars .cluster-bar {
@@ -32,11 +36,13 @@
 
             <div class="max-w-2xl">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-                    Usulan pelatihan yang paling banyak masuk
+                    {{ $title }}
                 </h2>
-                <p class="mt-3 text-gray-600 dark:text-slate-400">
-                    Aspirasi warga dan perusahaan yang sudah dikelompokkan dan disetujui Dinas Tenaga Kerja.
-                </p>
+                @if ($subtitle)
+                    <p class="mt-3 text-gray-600 dark:text-slate-400">
+                        {{ $subtitle }}
+                    </p>
+                @endif
                 <p class="mt-2 text-sm text-gray-500 dark:text-slate-400">
                     Banyaknya usulan tidak menentukan program yang dipilih.
                 </p>
@@ -161,3 +167,4 @@
         </script>
     </section>
 @endif
+</div>

@@ -10,12 +10,23 @@ use Paparee\BaleDisnaker\Models\Program;
  *
  * Sumbernya klaster yang disetujui, tetapi hanya sebagian yang menjadi program —
  * karena itu section ini ditampilkan terpisah dari daftar usulan.
+ * Section disembunyikan bila `program-section` belum ada di CMS.
  */
 class ProgramSection extends UmpakComponent
 {
+    public string $slug = 'program-section';
+
+    public function mount(?string $slug = null): void
+    {
+        if ($slug) {
+            $this->slug = $slug;
+        }
+    }
+
     public function render()
     {
         return view('bale-disnaker::livewire.landing-page.home.program-section', [
+            'section' => $this->section($this->slug),
             'programs' => $this->programs(),
         ]);
     }

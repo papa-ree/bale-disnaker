@@ -1,13 +1,23 @@
-@if (! empty($programs))
+@php
+    $programs = $programs ?? [];
+    $section = $section ?? null;
+    $title = $section?->meta('title', 'Program pelatihan yang sudah ditetapkan');
+    $subtitle = $section?->meta('subtitle', 'Program yang diputuskan Dinas Tenaga Kerja dari usulan warga dan perusahaan.');
+@endphp
+
+<div>
+@if ($section && ! empty($programs))
     <section id="program-pelatihan" class="py-20 bg-white dark:bg-slate-900">
         <div class="container max-w-7xl mx-auto px-4" data-aos="fade-up">
             <div class="max-w-2xl">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-                    Program pelatihan yang sudah ditetapkan
+                    {{ $title }}
                 </h2>
-                <p class="mt-3 text-gray-600 dark:text-slate-400">
-                    Program yang diputuskan Dinas Tenaga Kerja dari usulan warga dan perusahaan.
-                </p>
+                @if ($subtitle)
+                    <p class="mt-3 text-gray-600 dark:text-slate-400">
+                        {{ $subtitle }}
+                    </p>
+                @endif
             </div>
 
             <div class="mt-10 grid gap-4 sm:gap-6 sm:grid-cols-2">
@@ -41,3 +51,4 @@
         </div>
     </section>
 @endif
+</div>
